@@ -12,3 +12,4 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 }
+//미니 게임 기능 구현 메인 자바
