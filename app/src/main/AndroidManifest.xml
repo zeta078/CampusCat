@@ -1,26 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    package="com.example.campuscat">
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
+        android:label="CampusCat"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CampusCat"
-        tools:targetApi="31">
+        android:theme="@style/Theme.CampusCat">
+
+        <!-- 앱 시작을 MiniGameActivity로 변경 -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".MiniGameActivity"
+            android:exported="true"> <!-- ✅ 이 줄 추가 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+
+        <!-- MainActivity는 LAUNCHER에서 제거 -->
+        <activity android:name=".MainActivity" />
+
+    </application>
 </manifest>
