@@ -1,15 +1,25 @@
-package com.example.campuscat;
-
-import android.os.Bundle;
+package com.example.test;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
-
+public class CafeteriaActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.cafeteria);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
-//학식 기능 구현 메인 자바
