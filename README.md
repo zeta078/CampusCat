@@ -37,7 +37,7 @@ git# 캠퍼스 고양이 (CampusCat)
 ## 👤 개발자
 
 - **개발자 이름** : 타이머스
-- **GitHub** :  
+- **GitHub 주소** : github.com/zeta078/CampusCat
 
 ---
 
