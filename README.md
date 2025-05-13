@@ -22,10 +22,9 @@ git# 클래스 냥이 (ClassCat)
 ---
 
 ## 📸 화면 예시
+![홈화면](images/Campus cat.png)
 
-| 홈 화면 | 근무 화면 | 고양이 화면 | 설정 화면 |
-|:--:|:--:|:--:|:--:|
-| ![홈](link-to-home-image) | ![시간표](link-to-work-image) | ![고양이](link-to-cat-image) | ![설정](link-to-settings-image) |
+
 
 ---
 
@@ -39,7 +38,7 @@ git# 클래스 냥이 (ClassCat)
 ## 👤 개발자
 
 - **개발자 이름** : 타이머스
-- **GitHub** : (https://github.com/lwg5421)
+- **GitHub** : 
 
 ---
 
