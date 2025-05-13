@@ -22,7 +22,7 @@ git# 클래스 냥이 (ClassCat)
 ---
 
 ## 📸 화면 예시
-![홈화면](images/Campus cat.png)
+![홈화면](images/Campuscat.png)
 
 
 
