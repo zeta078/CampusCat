@@ -13,4 +13,4 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-//홈 화면 메인 자바
+//홈 화면 구현 메인 자바
