@@ -1,19 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-//플래너 기능 구현 xml
+        <!-- 제목 -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="일일 계획표"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="16dp"/>
+
+        <!-- 날짜 + D-day -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:text="날짜"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="8dp"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="yyyy-MM-dd"/>
+
+            <TextView
+                android:text="D-day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:paddingEnd="8dp"/>
+
+            <EditText
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:hint="D-10"/>
+        </LinearLayout>
+
+        <!-- 표 영역 -->
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:layout_marginTop="16dp">
+
+            <!-- 헤더 -->
+            <TableRow android:background="#fbb1f9">
+                <TextView android:text="과목" android:padding="8dp" android:gravity="center"/>
+                <TextView android:text="공부목표량" android:padding="8dp" android:gravity="center"/>
+                <TextView android:text="공부시간" android:padding="8dp" android:gravity="center"/>
+                <TextView android:text="성취도" android:padding="8dp" android:gravity="center"/>
+            </TableRow>
+
+            <!-- 8줄 예시로 작성 -->
+            <!-- TableRow는 필요에 따라 반복문으로 동적 추가도 가능 -->
+            <TableRow>
+                <EditText android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <EditText android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <EditText android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <EditText android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            </TableRow>
+            <!-- 같은 형식의 TableRow 7개 추가 -->
+            <!-- 생략 -->
+        </TableLayout>
+
+        <!-- 연기계획 -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:text="공부계획"
+                android:background="#fbb1f9"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="8dp"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:gravity="top"
+                android:background="@android:drawable/edit_text"
+                android:inputType="textMultiLine"/>
+        </LinearLayout>
+
+        <!-- 자기성찰 -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:text="자기성찰"
+                android:background="#fbb1f9"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="8dp"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:gravity="top"
+                android:background="@android:drawable/edit_text"
+                android:inputType="textMultiLine"/>
+        </LinearLayout>
+
+        <!-- 총 공부 시간 -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:text="총 공부 시간"
+                android:background="#fbb1f9"
+                android:padding="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/editTotalTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
