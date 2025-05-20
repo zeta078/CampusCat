@@ -1,10 +1,9 @@
 package com.example.campuscat;
 
 import android.os.Bundle;
-import android.widget.CalendarView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,13 +12,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CalendarView calendarView = findViewById(R.id.calendarView);
-        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            String date = year + "년 " + (month + 1) + "월 " + dayOfMonth + "일";
-            Toast.makeText(MainActivity.this, "선택한 날짜: " + date, Toast.LENGTH_SHORT).show();
-        });
+        // CalendarFragment를 기본으로 실행
+        loadFragment(new CalendarFragment());
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
     }
 }
-
-
-//캘린더 구현 메인 자바
