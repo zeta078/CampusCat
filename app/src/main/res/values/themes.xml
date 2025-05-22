@@ -1,9 +1,22 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.CampusCat" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Base application theme -->
+    <style name="Base.Theme.CampusCat" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- 배경색 설정 -->
+        <item name="android:windowBackground">#FDFDFD</item>
+
+        <!-- 기본 폰트 설정 -->
+        <item name="android:fontFamily">@font/nanumsquare</item>
+
+        <!-- 버튼 기본 스타일 지정 -->
+        <item name="buttonStyle">@style/RoundedButton</item>
+
+        <!-- 카드뷰 둥글게 -->
+        <item name="cardViewStyle">@style/RoundedCard</item>
+
+        <!-- EditText 둥글게 -->
+        <item name="editTextStyle">@style/RoundedEditText</item>
     </style>
 
+    <!-- 실제 앱 테마는 Base.Theme.CampusCat 상속 -->
     <style name="Theme.CampusCat" parent="Base.Theme.CampusCat" />
 </resources>
