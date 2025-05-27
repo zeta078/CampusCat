@@ -18,8 +18,15 @@
         android:hint="요일 (예: 월요일)" />
 
     <EditText
-        android:id="@+id/edit_time"
+        android:id="@+id/edit_start_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="시간 (예: 9시)" />
+        android:hint="시작 시간 (예: 09:00)" />
+
+    <EditText
+        android:id="@+id/edit_end_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="끝나는 시간 (예: 10:30)" />
+
 </LinearLayout>

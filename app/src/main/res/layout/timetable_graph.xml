@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!-- 왼쪽: 시간 라벨 (세로) -->
+    <LinearLayout
+        android:id="@+id/layout_time_labels"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <!-- 오른쪽: 시간표 셀들이 배치될 그래프 영역 -->
+    <!-- 09: 00 ~ 18 : 00 까지 10칸 * 100dp 기준 -->
+    <FrameLayout
+        android:id="@+id/timetable_grid"
+        android:layout_width="match_parent"
+        android:layout_height="1000dp"
+        android:layout_marginStart="8dp"
+        android:background="#FFFFFF" />
+</LinearLayout>

@@ -1,0 +1,5 @@
+<!-- res/drawable/timetable_cell.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="12dp"/>
+</shape>
