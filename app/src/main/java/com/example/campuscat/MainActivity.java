@@ -4,19 +4,25 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.widget.Button;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import androidx.appcompat.content.res.AppCompatResources;
+import com.google.android.material.button.MaterialButton;
 
 public class StudyActivity extends AppCompatActivity {
 
     private TextView textTimer;
     private EditText editHours, editMinutes;
-    private Button btnToggle, btnReset;
+    private MaterialButton btnToggle, btnReset;
 
     private boolean isRunning = false;
-    private boolean useCountdown = false; // 동적으로 결정됨
+    private boolean useCountdown = false;
 
     private long countdownMillis = 0;
     private long timeRemaining = 0;
@@ -29,13 +35,25 @@ public class StudyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.study); // 너의 XML 이름이 study.xml일 경우
+        setContentView(R.layout.study);
 
         textTimer = findViewById(R.id.textTimer);
         editHours = findViewById(R.id.editHours);
         editMinutes = findViewById(R.id.editMinutes);
         btnToggle = findViewById(R.id.btnToggle);
         btnReset = findViewById(R.id.btnReset);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D5ECFF")));
+            getSupportActionBar().setTitle("");
+
+            Drawable upArrow = AppCompatResources.getDrawable(this, androidx.appcompat.R.drawable.abc_ic_ab_back_material);
+            if (upArrow != null) {
+                upArrow.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
+                getSupportActionBar().setHomeAsUpIndicator(upArrow);
+            }
+        }
 
         btnToggle.setOnClickListener(v -> {
             if (isRunning) {
@@ -70,7 +88,7 @@ public class StudyActivity extends AppCompatActivity {
 
     private void startTimer() {
         isRunning = true;
-        btnToggle.setText("일시정지");
+        btnToggle.setText("시작");
 
         if (useCountdown) {
             countDownTimer = new CountDownTimer(timeRemaining, 1000) {
@@ -84,7 +102,7 @@ public class StudyActivity extends AppCompatActivity {
                 public void onFinish() {
                     isRunning = false;
                     timeRemaining = 0;
-                    textTimer.setText("00:00");
+                    textTimer.setText("00:00:00");
                     btnToggle.setText("시작");
                 }
             };
@@ -117,7 +135,7 @@ public class StudyActivity extends AppCompatActivity {
         pauseTimer();
         timeRemaining = 0;
         timeElapsed = 0;
-        textTimer.setText("00:00");
+        textTimer.setText("00:00:00");
         btnToggle.setText("시작");
     }
 
@@ -129,4 +147,12 @@ public class StudyActivity extends AppCompatActivity {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
