@@ -1,23 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="#D5ECFF">
 
-    <Button
-        android:id="@+id/btnCafe"
+    <TextView
+        android:id="@+id/textTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:text="오늘의 학식"
-        android:backgroundTint="#000000"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="00:00:00"
+        android:textSize="48sp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnStudy" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="60dp" />
 
+    <EditText
+        android:id="@+id/editHours"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="시간"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/textTimer"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp" />
 
+    <EditText
+        android:id="@+id/editMinutes"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="분"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/textTimer"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="시작"
+        android:textColor="#FDFDFD"
+        app:layout_constraintTop_toBottomOf="@id/editMinutes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#2D4DC2"
+        app:cornerRadius="50dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="초기화"
+        android:textColor="#FDFDFD"
+        app:layout_constraintTop_toBottomOf="@id/btnToggle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#2D4DC2"
+        app:cornerRadius="50dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
