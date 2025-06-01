@@ -1,65 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FDFDFD"
+    android:padding="16dp">
 
-    <!-- 캘린더 뷰 -->
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:gravity="center_horizontal">
 
-    <!-- 안내 문구 (처음에만 보임) -->
-    <TextView
-        android:id="@+id/textGuide"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="날짜를 선택해 메모하세요."
-        android:textColor="#888888"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:padding="16dp"
-        android:layout_marginTop="16dp" />
+<!-- 캘린더 뷰 -->
+<CalendarView
+    android:id="@+id/calendarView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp" />
 
-    <!-- 날짜 선택 후 보여질 메모 영역 -->
-    <LinearLayout
-        android:id="@+id/layoutMemoSection"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
+<!-- 선택된 날짜 텍스트 -->
+<TextView
+    android:id="@+id/textSelectedDate"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="선택된 날짜: "
+    android:textSize="18sp"
+    android:textColor="#1A274D"
+android:paddingBottom="12dp" />
 
-        <!-- 선택된 날짜 표시 -->
-        <TextView
-            android:id="@+id/textSelectedDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="날짜"
-            android:textSize="18sp"
-            android:layout_marginTop="16dp" />
+<!-- 저장된 메모 표시 -->
+<TextView
+    android:id="@+id/textSavedMemo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:textColor="#1A274D"
+    android:textSize="16sp"
+    android:background="#D5ECFF"
+android:visibility="gone"
+android:layout_marginBottom="12dp" />
 
-        <!-- 메모 입력 영역 (텍스트 수 초과시 스크롤 가능) -->
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="12dp"
-            android:background="#f2f2f2">
+<!-- 메모 입력 칸 -->
+<EditText
+    android:id="@+id/editMemo"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:hint="OO월 OO일에 일정 추가"
+    android:background="#FFF4C2"
+android:padding="12dp"
+android:textColor="#000000"
+android:textSize="16sp"
+android:gravity="top"
+android:inputType="textMultiLine"
+android:maxLines="6"
+android:scrollbars="vertical"
+android:overScrollMode="always"
+android:layout_marginBottom="12dp" />
 
-            <EditText
-                android:id="@+id/editMemo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="작성해야 할 내용을 입력하세요"
-                android:padding="16dp"
-                android:textSize="15sp"
-                android:background="@android:color/transparent"
-                android:inputType="textMultiLine"
-                android:minLines="5"
-                android:maxLines="10"
-                android:gravity="top|start"
-                android:scrollbars="none" />
-        </ScrollView>
-    </LinearLayout>
+<!-- 저장 버튼 -->
+<Button
+    android:id="@+id/btnSave"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="저장"
+    android:backgroundTint="#FFE275"
+android:textColor="#000000"
+android:textSize="16sp"
+android:layout_marginBottom="8dp" />
+
+<!-- 삭제 버튼 -->
+<Button
+    android:id="@+id/btnDelete"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="삭제"
+    android:backgroundTint="#FF5252"
+android:textColor="#000000"
+android:textSize="16sp"
+android:visibility="gone" />
+
 </LinearLayout>
+    </ScrollView>
