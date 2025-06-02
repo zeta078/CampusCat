@@ -1,21 +1,53 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableLayoutTimetable"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:stretchColumns="1,2,3,4,5"
+    android:background="@drawable/table_border_bg"
+    android:layout_margin="8dp">
 
-    <!-- 왼쪽: 시간 라벨 (세로) -->
-    <LinearLayout
-        android:id="@+id/layout_time_labels"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" />
+    <TableRow>
+        <TextView android:text="" android:padding="8dp"/>
+        <TextView android:text="월" android:gravity="center" android:textStyle="bold"/>
+        <TextView android:text="화" android:gravity="center" android:textStyle="bold"/>
+        <TextView android:text="수" android:gravity="center" android:textStyle="bold"/>
+        <TextView android:text="목" android:gravity="center" android:textStyle="bold"/>
+        <TextView android:text="금" android:gravity="center" android:textStyle="bold"/>
+    </TableRow>
 
-    <!-- 오른쪽: 시간표 셀들이 배치될 그래프 영역 -->
-    <!-- 09: 00 ~ 18 : 00 까지 10칸 * 100dp 기준 -->
-    <FrameLayout
-        android:id="@+id/timetable_grid"
-        android:layout_width="match_parent"
-        android:layout_height="1000dp"
-        android:layout_marginStart="8dp"
-        android:background="#FFFFFF" />
-</LinearLayout>
+    <!-- 반복 예시: 9:00, 9:30, 10:00, ... 16:30까지 -->
+    <TableRow>
+        <TextView android:text="9:00" android:gravity="center"/>
+        <TextView android:id="@+id/cell_m9" android:gravity="center"/>
+        <TextView android:id="@+id/cell_t9" android:gravity="center"/>
+        <TextView android:id="@+id/cell_w9" android:gravity="center"/>
+        <TextView android:id="@+id/cell_th9" android:gravity="center"/>
+        <TextView android:id="@+id/cell_f9" android:gravity="center"/>
+    </TableRow>
+    <TableRow>
+        <TextView android:text="9:30" android:gravity="center"/>
+        <TextView android:id="@+id/cell_m9_30" android:gravity="center"/>
+        <TextView android:id="@+id/cell_t9_30" android:gravity="center"/>
+        <TextView android:id="@+id/cell_w9_30" android:gravity="center"/>
+        <TextView android:id="@+id/cell_th9_30" android:gravity="center"/>
+        <TextView android:id="@+id/cell_f9_30" android:gravity="center"/>
+    </TableRow>
+    <TableRow>
+        <TextView android:text="10:00" android:gravity="center"/>
+        <TextView android:id="@+id/cell_m10" android:gravity="center"/>
+        <TextView android:id="@+id/cell_t10" android:gravity="center"/>
+        <TextView android:id="@+id/cell_w10" android:gravity="center"/>
+        <TextView android:id="@+id/cell_th10" android:gravity="center"/>
+        <TextView android:id="@+id/cell_f10" android:gravity="center"/>
+    </TableRow>
+    <TableRow>
+        <TextView android:text="10:30" android:gravity="center"/>
+        <TextView android:id="@+id/cell_m10_30" android:gravity="center"/>
+        <TextView android:id="@+id/cell_t10_30" android:gravity="center"/>
+        <TextView android:id="@+id/cell_w10_30" android:gravity="center"/>
+        <TextView android:id="@+id/cell_th10_30" android:gravity="center"/>
+        <TextView android:id="@+id/cell_f10_30" android:gravity="center"/>
+    </TableRow>
+    <!-- ... 11:00, 11:30 ... 16:30까지 같은 방식으로 복붙! -->
+</TableLayout>

@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <EditText
         android:id="@+id/edit_subject"
+        android:hint="과목명"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="과목명" />
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edit_place"
+        android:hint="장소 (예: 공학관 505호)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/edit_day"
+        android:hint="요일 (예: 월)"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="요일 (예: 월요일)" />
+        android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/edit_start_time"
+        android:hint="시작 시간 (예: 09:00)"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="시작 시간 (예: 09:00)" />
+        android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/edit_end_time"
+        android:hint="끝나는 시간 (예: 10:30)"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="끝나는 시간 (예: 10:30)" />
-
+        android:layout_height="wrap_content" />
 </LinearLayout>
