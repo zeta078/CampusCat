@@ -1,13 +1,20 @@
 package com.example.test;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.view.View;
+
 import androidx.appcompat.content.res.AppCompatResources;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class CafeteriaActivity extends AppCompatActivity{
     @Override
@@ -26,6 +33,15 @@ public class CafeteriaActivity extends AppCompatActivity{
                 getSupportActionBar().setHomeAsUpIndicator(upArrow);
             }
         }
+
+        FloatingActionButton fabCalendar = findViewById(R.id.fabCalendar);
+        fabCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CafeteriaActivity.this, CalendarActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
