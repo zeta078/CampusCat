@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FDFDFD">
 
-    <!-- 1) 시간표가 비어 있을 때 보이는 초기 화면 -->
+    <!-- 빈 화면 -->
     <LinearLayout
         android:id="@+id/layout_empty"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:textColor="#1A274D" />
     </LinearLayout>
 
-    <!-- 2) 실제 시간표 + 카드뷰 리스트가 보일 영역 -->
+    <!-- 콘텐츠 -->
     <ScrollView
         android:id="@+id/layout_content"
         android:layout_width="match_parent"
@@ -46,8 +46,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- ────────────────────────────────────────────────── -->
-            <!-- 2-1) 요일(월~금) 라벨 영역 -->
+            <!-- 요일 라벨 -->
             <LinearLayout
                 android:id="@+id/layout_day_labels"
                 android:layout_width="match_parent"
@@ -55,42 +54,39 @@
                 android:orientation="horizontal"
                 android:paddingStart="60dp"
                 android:layout_marginBottom="2dp" />
-            <!-- ────────────────────────────────────────────────── -->
 
-            <!-- 2-2) 시간 라벨 + 그래프(프레임레이아웃) -->
+            <!-- 시간 라벨 + 그리드 -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- 2-2-1) 왼쪽 시간 라벨(09:00~18:00, 30분 단위) -->
+                <!-- 시간 라벨 (1시간 단위) -->
                 <LinearLayout
                     android:id="@+id/layout_time_labels"
                     android:layout_width="60dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="top" />
 
-                <!-- 2-2-2) 실제 시간표 그리드 (요일별 칸 + 30분 단위 선) -->
+                <!-- 그리드: 9:00~18:00 = 18칸×30dp = 540dp -->
                 <FrameLayout
                     android:id="@+id/timetable_grid"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="540dp"
                     android:background="#FFFFFF"
                     android:layout_marginStart="-4dp" />
             </LinearLayout>
-            <!-- ────────────────────────────────────────────────── -->
 
-            <!-- 2-3) 카드뷰 리스트 -->
+            <!-- 카드뷰 리스트 -->
             <LinearLayout
                 android:id="@+id/layout_timetable_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="16dp" />
-            <!-- ────────────────────────────────────────────────── -->
 
-            <!-- 2-4) 추가 버튼 (항상 보이되, 초기화면에서만 동작) -->
+            <!-- 추가 버튼 -->
             <Button
                 android:id="@+id/btn_add_more"
                 android:layout_width="wrap_content"
@@ -100,6 +96,7 @@
                 android:textColor="#1A274D"
                 android:layout_marginTop="16dp"
                 android:layout_gravity="center_horizontal" />
+
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
