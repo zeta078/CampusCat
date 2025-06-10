@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#D5ECFF" /> <!-- 배경 색상 -->
+    <corners android:topLeftRadius="24dp"
+        android:topRightRadius="24dp" /> <!-- 위쪽 둥글게 -->
+    <elevation android:height="8dp" /> <!-- 선택사항: 그림자 효과 -->
+</shape>

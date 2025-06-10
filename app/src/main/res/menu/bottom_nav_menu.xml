@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_calendar"
+        android:title="캘린더"
+        android:icon="@drawable/ic_calendar" />
+
+    <item
+        android:id="@+id/nav_planner"
+        android:title="플래너"
+        android:icon="@drawable/ic_planner" />
+
+    <item
+        android:id="@+id/nav_home"
+        android:title="홈"
+        android:icon="@drawable/ic_home" />
+
+    <item
+        android:id="@+id/nav_study"
+        android:title="자습"
+        android:icon="@drawable/ic_study" />
+
+    <item
+        android:id="@+id/nav_more"
+        android:title="더보기"
+        android:icon="@drawable/ic_more" />
+</menu>
