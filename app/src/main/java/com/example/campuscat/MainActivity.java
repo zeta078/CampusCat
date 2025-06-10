@@ -1,3 +1,4 @@
+
 package com.example.campuscat;
 
 import android.os.Bundle;
@@ -9,6 +10,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        //임시로 주석 처리
+        //setContentView(R.layout.activity_main);
     }
 }
