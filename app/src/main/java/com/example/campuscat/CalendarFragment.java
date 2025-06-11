@@ -1,14 +1,5 @@
 package com.example.campuscat;
 
-<<<<<<< HEAD
-import androidx.fragment.app.Fragment;
-
-public class CalendarFragment extends Fragment {
-    public CalendarFragment() {
-        super(R.layout.fragment_calendar);
-    }
-}
-=======
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -31,7 +22,12 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+
 public class CalendarFragment extends Fragment {
+    public CalendarFragment() {
+        super(R.layout.fragment_calendar);
+    }
+
 
     private CalendarView calendarView;
     private TextView textSelectedDate, textSavedMemo;
@@ -146,4 +142,4 @@ public class CalendarFragment extends Fragment {
         btnDelete.setVisibility(View.VISIBLE);
     }
 }
->>>>>>> feature/calendar
+
