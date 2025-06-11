@@ -35,6 +35,9 @@ android {
 
 dependencies {
 
+    // Google Play Services - 위치 서비스 (GPS, 네트워크 기반 위치 제공)
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
