@@ -49,6 +49,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
 
+    <!-- 러그 이미지 -->
+    <ImageView
+        android:id="@+id/decorRug"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:src="@drawable/decorrug"
+    android:contentDescription="러그"
+    android:visibility="gone"
+    app:layout_constraintTop_toBottomOf="@id/catImage"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginStart="24dp"
+    android:layout_marginTop="8dp" />
+
+    <!-- 장난감 이미지 -->
+    <ImageView
+        android:id="@+id/decorToy"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/decortoy"
+        android:contentDescription="장난감"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/catImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp" />
+
+
     <!-- 레벨 텍스트 -->
     <TextView
         android:id="@+id/levelText"

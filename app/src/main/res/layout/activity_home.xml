@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnMission"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" app:layout_constraintBottom_toTopOf="@+id/catImage" app:layout_constraintVertical_bias="0.35" android:layout_marginTop="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp" />
 
@@ -52,21 +52,25 @@
         android:layout_height="200dp"
         android:src="@drawable/cat_lv1"
         android:contentDescription="고양이"
-        app:layout_constraintTop_toBottomOf="@id/todaySchedule" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/todaySchedule"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tvCatLevel" android:layout_marginTop="24dp" />
+        android:layout_marginTop="24dp" />
 
     <TextView
-        android:id="@+id/tvCatLevel" android:layout_width="0dp"
+        android:id="@+id/tvCatLevel"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="야옹이 3LV"
         android:gravity="center"
         android:padding="12dp"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/catImage" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/catImage"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/expBar" android:layout_marginTop="16dp" android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp" />
 
     <ProgressBar
@@ -78,10 +82,22 @@
         android:progress="40"
         android:progressTint="#FFAB40"
         android:background="#E0E0E0"
-        app:layout_constraintTop_toBottomOf="@id/tvCatLevel" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCatLevel"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view" android:layout_marginTop="8dp" android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp" />
+
+    <!-- ✅ 프래그먼트를 동적으로 삽입할 FrameLayout 추가 -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/expBar"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"

@@ -8,6 +8,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import com.example.campuscat.InventoryActivity;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
