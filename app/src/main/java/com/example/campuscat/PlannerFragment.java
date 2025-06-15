@@ -103,7 +103,7 @@ public class PlannerFragment extends Fragment {
         TableRow.LayoutParams etParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 4.0f);
         etParams.setMargins(dpToPx(0), dpToPx(8), dpToPx(8), dpToPx(8));
         newSubjectEditText.setLayoutParams(etParams);
-        newSubjectEditText.setHint("예: 모프");
+        newSubjectEditText.setHint("예: 모바일프로그래밍");
         newSubjectEditText.setInputType(InputType.TYPE_CLASS_TEXT);
         newSubjectEditText.setSingleLine(true);
         newSubjectEditText.setPadding(dpToPx(0), dpToPx(8), dpToPx(8), dpToPx(8));
