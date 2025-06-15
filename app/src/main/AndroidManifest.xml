@@ -24,7 +24,7 @@
         </activity>
 
         <!-- 🔻 필요 시 MainActivity는 그냥 실행만 가능하도록 남겨둠 -->
-        <activity android:name=".MainActivity" />
+        <activity android:name=".PlannerMainActivity" />
     </application>
 
 </manifest>

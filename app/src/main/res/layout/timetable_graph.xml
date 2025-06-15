@@ -2,7 +2,7 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tableLayoutTimetable"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:stretchColumns="1,2,3,4,5"
     android:background="@drawable/table_border_bg"
     android:layout_margin="8dp">
