@@ -17,9 +17,9 @@
         android:icon="@drawable/ic_home" />
 
     <item
-        android:id="@+id/nav_study"
-        android:title="자습"
-        android:icon="@drawable/ic_study" />
+        android:id="@+id/nav_timetable"
+        android:title="시간표"
+        android:icon="@drawable/ic_timetable" />
 
     <item
         android:id="@+id/nav_more"

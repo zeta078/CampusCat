@@ -13,7 +13,7 @@ public class MoreActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_more); // XML은 fragment_more.xml
+        setContentView(R.layout.settings); // XML은 fragment_more.xml
 
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {

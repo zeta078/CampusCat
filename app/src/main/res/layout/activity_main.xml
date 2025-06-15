@@ -32,5 +32,4 @@
         app:labelVisibilityMode="labeled"
         app:itemTextColor="@color/black"
         app:itemIconTint="#2196F3" />
-
 </LinearLayout>

@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
                             selected = new CalendarFragment();
                         } else if (id == R.id.nav_planner) {
                             selected = new PlannerFragment();
-                        } else if (id == R.id.nav_study) {
-                            selected = new StudyFragment();
+                        } else if (id == R.id.nav_timetable) {
+                            selected = new TimetableFragment();
                         } else if (id == R.id.nav_more) {
                             selected = new MoreFragment();
                         }

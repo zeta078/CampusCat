@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#FDFDFD"
     android:padding="24dp">
 
-    <!-- 🔙 상단 툴바 형태의 뒤로가기 -->
+    <!-- 상단 타이틀바 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,44 +14,98 @@
         android:gravity="center_vertical"
         android:paddingBottom="24dp">
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_back"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="뒤로가기 버튼"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:maxWidth="32dp"
-            android:maxHeight="32dp"
-            android:layout_marginEnd="8dp"/>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="더보기"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:paddingStart="12dp"
             android:textColor="#000000" />
     </LinearLayout>
 
-    <!-- 🌞 밝기 설정 -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="밝기 설정"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginBottom="12dp" />
+    <!-- 메뉴 항목들 -->
 
-    <SeekBar
-        android:id="@+id/seekBarBrightness"
+    <TextView
+        android:id="@+id/menu_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp" />
+        android:text="설정"
+        android:textSize="20sp"
+        android:textColor="#111111"
+        android:paddingVertical="18dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="#EEEEEE" />
+
+    <TextView
+        android:id="@+id/menu_study"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="자습"
+        android:textSize="20sp"
+        android:textColor="#111111"
+        android:paddingVertical="18dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="#EEEEEE" />
+
+    <TextView
+        android:id="@+id/menu_cafeteria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="학식"
+        android:textSize="20sp"
+        android:textColor="#111111"
+        android:paddingVertical="18dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="#EEEEEE" />
+
+    <TextView
+        android:id="@+id/menu_inventory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="인벤토리"
+        android:textSize="20sp"
+        android:textColor="#111111"
+        android:paddingVertical="18dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="#EEEEEE" />
+
+    <TextView
+        android:id="@+id/menu_mission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="미션"
+        android:textSize="20sp"
+        android:textColor="#111111"
+        android:paddingVertical="18dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true" />
 
 </LinearLayout>
+

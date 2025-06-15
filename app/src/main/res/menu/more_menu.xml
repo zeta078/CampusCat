@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/more_settings"
+        android:title="설정"
+        android:icon="@drawable/ic_study" />
+    <item
+        android:id="@+id/more_study"
+        android:title="자습"
+        android:icon="@drawable/ic_study" />
+
+    <item
+        android:id="@+id/more_cafeteria"
+        android:title="학식"
+        android:icon="@drawable/ic_planner" />
+
+    <item
+        android:id="@+id/more_inventory"
+        android:title="인벤토리"
+        android:icon="@drawable/ic_home" />
+</menu>
