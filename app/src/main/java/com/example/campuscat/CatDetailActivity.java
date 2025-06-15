@@ -3,6 +3,7 @@ package com.example.campuscat;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -39,17 +40,21 @@ public class CatDetailActivity extends AppCompatActivity {
 
         updateUI();
         updateFishCount();
+        applyDecorations();
 
         catImage.setOnClickListener(v -> {
             currentXp += 10;
-            Toast.makeText(CatDetailActivity.this, "출석 완료! +10XP", Toast.LENGTH_SHORT).show();
             checkLevelUp();
             updateUI();
             saveXP();
+            Toast.makeText(this, "출석 완료! +10XP", Toast.LENGTH_SHORT).show();
         });
 
         ImageButton btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> {
+            saveXP();
+            finish();
+        });
 
         ImageButton playWithButton = findViewById(R.id.btnPlayWithBottom);
         playWithButton.setOnClickListener(v -> {
@@ -70,8 +75,18 @@ public class CatDetailActivity extends AppCompatActivity {
             Intent intent = new Intent(CatDetailActivity.this, MiniGameActivity.class);
             startActivity(intent);
         });
+    }
 
-        applyDecorations();
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveXP();
+    }
+
+    @Override
+    public void onBackPressed() {
+        saveXP();
+        super.onBackPressed();
     }
 
     private void updateUI() {
@@ -85,7 +100,9 @@ public class CatDetailActivity extends AppCompatActivity {
         expBar.setMax(maxProgress);
         expBar.setProgress(progress);
 
-        catImage.setImageResource(getCurrentCatImageRes(currentLevel));
+        int imageResId = getCurrentCatImageRes(currentLevel);
+        Log.d("🐱CatDetail", "표시 이미지 ID: " + imageResId);
+        catImage.setImageResource(imageResId);
     }
 
     private void updateFishCount() {
@@ -97,6 +114,7 @@ public class CatDetailActivity extends AppCompatActivity {
     private void checkLevelUp() {
         while (currentLevel < thresholds.length - 1 && currentXp >= thresholds[currentLevel]) {
             currentLevel++;
+            Log.d("🐱레벨업", "레벨업! 현재 레벨: " + currentLevel);
         }
     }
 
@@ -105,6 +123,7 @@ public class CatDetailActivity extends AppCompatActivity {
         editor.putInt("catlevel", currentLevel);
         editor.putInt("catxp", currentXp);
         editor.apply();
+        Log.d("🐱CatDetail", "저장된 level: " + currentLevel + ", XP: " + currentXp);
     }
 
     public static int getCurrentCatImageRes(int level) {
@@ -123,15 +142,5 @@ public class CatDetailActivity extends AppCompatActivity {
 
         if (hasRug) decorRug.setVisibility(ImageView.VISIBLE);
         if (hasToy) decorToy.setVisibility(ImageView.VISIBLE);
-    }
-
-    public int getCurrentLevel() {
-        return currentLevel;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateFishCount(); // 다시 화면에 들어올 때 물고기 수 갱신
     }
 }

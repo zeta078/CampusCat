@@ -13,7 +13,7 @@
         android:theme="@style/Theme.CampusCat"
         tools:targetApi="31">
 
-        <!-- ✅ MainActivity를 앱의 시작 액티비티로 설정 -->
+        <!-- ✅ 앱 시작점 -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -23,10 +23,11 @@
             </intent-filter>
         </activity>
 
-        <!-- 🔻 필요 시 MainActivity는 그냥 실행만 가능하도록 남겨둠 -->
+        <!-- 🧩 각 액티비티 등록 -->
         <activity android:name=".PlannerMainActivity" />
         <activity android:name=".CatDetailActivity" />
         <activity android:name=".MiniGameActivity" />
+        <activity android:name=".PlayWithActivity" /> <!-- ✅ 요거 추가 -->
 
     </application>
 

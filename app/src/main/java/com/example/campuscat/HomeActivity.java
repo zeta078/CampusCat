@@ -1,61 +1,72 @@
 package com.example.campuscat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Button;
+import android.util.Log;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 public class HomeActivity extends AppCompatActivity {
 
-    private Button btnMission, btnSettings;
-    private BottomNavigationView bottomNavigationView;
+    private ImageView catImage;
+    private ProgressBar expBar;
+    private TextView xpText, tvCatLevel;
+
+    private int level, xp;
+    private final int[] thresholds = {0, 300, 1000, 2000};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);  // 최초 화면
+        setContentView(R.layout.activity_home);
 
-        // 미션, 설정 버튼
-        btnMission = findViewById(R.id.btnMission);
-        btnSettings = findViewById(R.id.btnSettings);
+        // 뷰 초기화
+        catImage = findViewById(R.id.catImage);
+        expBar = findViewById(R.id.expBar);
+        xpText = findViewById(R.id.xpText);
+        tvCatLevel = findViewById(R.id.tvCatLevel);
 
-        btnMission.setOnClickListener(v ->
-                setContentView(R.layout.activity_mission));
-
-        btnSettings.setOnClickListener(v ->
-                setContentView(R.layout.activity_settings));
-
-        // 고양이 이미지 클릭 → 상세화면으로 이동
-        ImageView catImage = findViewById(R.id.catImage);
+        // 클릭 시 CatDetailActivity로 이동
         catImage.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, CatDetailActivity.class);
             startActivity(intent);
         });
+    }
 
-        /*
-        // 하단 바 이동 처리
-        bottomNavigationView = findViewById(R.id.bottom_navigation_view);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCatData(); // 앱 돌아올 때마다 최신 상태 로딩
+    }
 
-            if (id == R.id.nav_calendar) {
-                setContentView(R.layout.fragment_calendar);
-            } else if (id == R.id.nav_planner) {
-                setContentView(R.layout.planner_layout);
-            } else if (id == R.id.nav_home) {
-                setContentView(R.layout.activity_home);
-            } else if (id == R.id.nav_study) {
-                setContentView(R.layout.fragment_study);
-            } else if (id == R.id.nav_more) {
-                setContentView(R.layout.fragment_more);
-            }
+    private void loadCatData() {
+        SharedPreferences prefs = getSharedPreferences("CatPrefs", MODE_PRIVATE);
+        level = prefs.getInt("catlevel", 1);
+        xp = prefs.getInt("catxp", 0);
 
-            return true;
-        });
-         */
+        Log.d("🐱HomeActivity", "불러온 level: " + level + ", XP: " + xp);
+        updateUI();
+    }
+
+    private void updateUI() {
+        int nextXP = thresholds[level];
+        int prevXP = thresholds[level - 1];
+        int progress = xp - prevXP;
+        int maxProgress = nextXP - prevXP;
+
+        // 텍스트 및 바 갱신
+        tvCatLevel.setText("LEVEL " + level);
+        xpText.setText(progress + " / " + maxProgress + " XP");
+        expBar.setMax(maxProgress);
+        expBar.setProgress(progress);
+
+        // 이미지도 갱신
+        int imageResId = CatDetailActivity.getCurrentCatImageRes(level);
+        Log.d("🐱HomeActivity", "이미지 리소스 ID: " + imageResId);
+        catImage.setImageResource(imageResId);
     }
 }
