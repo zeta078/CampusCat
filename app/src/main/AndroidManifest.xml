@@ -15,7 +15,7 @@
 
         <!-- ✅ HomeActivity를 앱의 시작 액티비티로 설정 -->
         <activity
-            android:name=".HomeActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -14,9 +14,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(
+        bottomNavigationView.setOnItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

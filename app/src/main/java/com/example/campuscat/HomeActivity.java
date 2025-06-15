@@ -36,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        /*
         // 하단 바 이동 처리
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -55,5 +56,6 @@ public class HomeActivity extends AppCompatActivity {
 
             return true;
         });
+         */
     }
 }

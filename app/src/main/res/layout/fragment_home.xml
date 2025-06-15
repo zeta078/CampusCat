@@ -1,13 +1,102 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    tools:context="com.example.campuscat.HomeActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/btnMission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="홈 화면"
-        android:textSize="18sp"
-        android:textColor="#333333"
-        android:layout_gravity="center" />
-</FrameLayout>
+        android:text="미션"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp" />
+
+    <Button
+        android:id="@+id/btnSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="설정"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp" />
+
+    <TextView
+        android:id="@+id/todaySchedule"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#B2EBF2"
+        android:text="오늘의 일정: 일정 클릭 시 캘린더로 이동"
+        android:gravity="center"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/btnMission"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp" />
+
+    <ImageView
+        android:id="@+id/catImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/cat_lv1"
+        android:contentDescription="고양이"
+        app:layout_constraintTop_toBottomOf="@id/todaySchedule"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <TextView
+        android:id="@+id/tvCatLevel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="야옹이 3LV"
+        android:gravity="center"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/catImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp" />
+
+    <ProgressBar
+        android:id="@+id/expBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:max="100"
+        android:progress="40"
+        android:progressTint="#FFAB40"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/tvCatLevel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <!-- ✅ 프래그먼트를 동적으로 삽입할 FrameLayout 추가 -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/expBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
