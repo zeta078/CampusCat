@@ -1,50 +1,59 @@
 package com.example.campuscat;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private Button btnMission, btnSettings;
+    private BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_home);  // 최초 화면
 
-        // 첫 화면에 기본 프래그먼트 설정
-        loadFragment(new HomeFragment());
+        // 미션, 설정 버튼
+        btnMission = findViewById(R.id.btnMission);
+        btnSettings = findViewById(R.id.btnSettings);
 
-        // 바텀 네비게이션 연결 및 리스너 설정
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation_view);
-        bottomNav.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
+        btnMission.setOnClickListener(v ->
+                setContentView(R.layout.activity_mission));
+
+        btnSettings.setOnClickListener(v ->
+                setContentView(R.layout.activity_settings));
+
+        // 고양이 이미지 클릭 → 상세화면으로 이동
+        ImageView catImage = findViewById(R.id.catImage);
+        catImage.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, CatDetailActivity.class);
+            startActivity(intent);
+        });
+
+        // 하단 바 이동 처리
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
 
             if (id == R.id.nav_calendar) {
-                selectedFragment = new CalendarFragment();
+                setContentView(R.layout.fragment_calendar);
             } else if (id == R.id.nav_planner) {
-                selectedFragment = new PlannerFragment();
+                setContentView(R.layout.planner_layout);
             } else if (id == R.id.nav_home) {
-                selectedFragment = new HomeFragment();
+                setContentView(R.layout.activity_home);
             } else if (id == R.id.nav_study) {
-                selectedFragment = new StudyFragment();
+                setContentView(R.layout.fragment_study);
             } else if (id == R.id.nav_more) {
-                selectedFragment = new MoreFragment();
+                setContentView(R.layout.fragment_more);
             }
 
-            if (selectedFragment != null) {
-                loadFragment(selectedFragment);
-            }
             return true;
         });
-    }
-
-    // 프래그먼트를 교체하는 메서드
-    private void loadFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment) // activity_home.xml에 fragment_container 있어야 함
-                .commit();
     }
 }

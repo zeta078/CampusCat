@@ -1,11 +1,11 @@
 package com.example.campuscat;
 
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -33,19 +33,18 @@ public class MiniGameActivity extends AppCompatActivity {
     private int screenHeight, screenWidth;
     private int currency = 0;
     private boolean isPaused = false;
-    private final int GAME_DURATION = 30000; // 30초
+    private final int GAME_DURATION = 30000;
     private long timeLeft = GAME_DURATION;
     private CountDownTimer gameTimer;
     private MediaPlayer catchSound;
 
-    private final int SPAWN_INTERVAL = 1000; // 물고기 생성 간격
-    private final int FISH_SIZE = 100; // dp
+    private final int SPAWN_INTERVAL = 1000;
+    private final int FISH_SIZE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mini_game);
-
 
         rootLayout = findViewById(R.id.rootLayout);
         catNormal = findViewById(R.id.catNormal);
@@ -53,8 +52,6 @@ public class MiniGameActivity extends AppCompatActivity {
         currencyText = findViewById(R.id.currencyText);
         timerText = findViewById(R.id.timerText);
         pauseButton = findViewById(R.id.pauseButton);
-
-
 
         rootLayout.post(() -> {
             screenHeight = rootLayout.getHeight();
@@ -82,8 +79,27 @@ public class MiniGameActivity extends AppCompatActivity {
             public void onFinish() {
                 timerText.setText("게임 종료!");
                 handler.removeCallbacksAndMessages(null);
+                saveFishReward();
+                showGameEndDialog();
             }
         }.start();
+    }
+
+    private void saveFishReward() {
+        SharedPreferences prefs = getSharedPreferences("CatPrefs", MODE_PRIVATE);
+        int previousFish = prefs.getInt("fish_count", 0);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("fish_count", previousFish + currency);
+        editor.apply();
+    }
+
+    private void showGameEndDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("게임 종료")
+                .setMessage("획득한 물고기 수: " + currency)
+                .setPositiveButton("닫기", (dialog, which) -> finish())
+                .setCancelable(false)
+                .show();
     }
 
     private void pauseGame() {
@@ -127,7 +143,7 @@ public class MiniGameActivity extends AppCompatActivity {
         fish.setY(0);
 
         ObjectAnimator fallAnimator = ObjectAnimator.ofFloat(fish, "translationY", screenHeight);
-        fallAnimator.setDuration(1000); // 빠르게 낙하
+        fallAnimator.setDuration(1000);
         fallAnimator.setInterpolator(new LinearInterpolator());
         fallAnimator.start();
 

@@ -25,6 +25,9 @@
 
         <!-- 🔻 필요 시 MainActivity는 그냥 실행만 가능하도록 남겨둠 -->
         <activity android:name=".PlannerMainActivity" />
+        <activity android:name=".CatDetailActivity" />
+        <activity android:name=".MiniGameActivity" />
+
     </application>
 
 </manifest>

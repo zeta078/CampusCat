@@ -8,15 +8,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import com.example.campuscat.InventoryActivity;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CatDetailActivity extends AppCompatActivity {
 
-    private ImageView catImage, decorRug, decorToy;
-    private TextView levelText, xpText;
+    private ImageView catImage, decorRug, decorToy, fishIcon;
+    private TextView levelText, xpText, fishCountText;
     private ProgressBar expBar;
     private int currentLevel, currentXp;
     private final int[] thresholds = {0, 300, 1000, 2000};
@@ -32,14 +30,16 @@ public class CatDetailActivity extends AppCompatActivity {
         levelText = findViewById(R.id.levelText);
         xpText = findViewById(R.id.xpText);
         expBar = findViewById(R.id.expBar);
+        fishCountText = findViewById(R.id.fishCountText);
+        fishIcon = findViewById(R.id.fishIcon);
 
         SharedPreferences prefs = getSharedPreferences("CatPrefs", MODE_PRIVATE);
         currentLevel = prefs.getInt("catlevel", 1);
         currentXp = prefs.getInt("catxp", 10);
 
         updateUI();
+        updateFishCount();
 
-        // 출석 클릭 이벤트
         catImage.setOnClickListener(v -> {
             currentXp += 10;
             Toast.makeText(CatDetailActivity.this, "출석 완료! +10XP", Toast.LENGTH_SHORT).show();
@@ -65,6 +65,12 @@ public class CatDetailActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        ImageButton miniGameButton = findViewById(R.id.btnMiniGameBottom);
+        miniGameButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CatDetailActivity.this, MiniGameActivity.class);
+            startActivity(intent);
+        });
+
         applyDecorations();
     }
 
@@ -80,6 +86,12 @@ public class CatDetailActivity extends AppCompatActivity {
         expBar.setProgress(progress);
 
         catImage.setImageResource(getCurrentCatImageRes(currentLevel));
+    }
+
+    private void updateFishCount() {
+        SharedPreferences prefs = getSharedPreferences("CatPrefs", MODE_PRIVATE);
+        int fishCount = prefs.getInt("fish_count", 0);
+        fishCountText.setText(String.valueOf(fishCount));
     }
 
     private void checkLevelUp() {
@@ -115,5 +127,11 @@ public class CatDetailActivity extends AppCompatActivity {
 
     public int getCurrentLevel() {
         return currentLevel;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateFishCount(); // 다시 화면에 들어올 때 물고기 수 갱신
     }
 }
