@@ -1,5 +1,6 @@
 package com.example.campuscat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,13 @@ public class HomeFragment extends Fragment {
         tvCatLevel = view.findViewById(R.id.tvCatLevel);
         catImage = view.findViewById(R.id.catImage);
         expBar = view.findViewById(R.id.expBar);
+
+        // 고양이 클릭시 CatDetailActivity intent
+        catImage.setOnClickListener(v -> {
+            // Intent를 사용하여 CatDetailActivity를 시작합니다.
+            Intent intent = new Intent(requireContext(), CatDetailActivity.class);
+            startActivity(intent);
+        });
 
         // ✅ 미션 버튼 → MissionFragment로 이동
         btnMission.setOnClickListener(v -> {
