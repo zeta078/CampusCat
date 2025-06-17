@@ -34,7 +34,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#B2EBF2"
-        android:text="오늘의 일정: 일정 클릭 시 캘린더로 이동"
         android:gravity="center"
         android:padding="12dp"
         android:textSize="16sp"

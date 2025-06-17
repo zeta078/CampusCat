@@ -2,6 +2,7 @@ package com.example.campuscat;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +17,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class HomeFragment extends Fragment {
 
@@ -38,7 +44,6 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
 
-
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         btnMission = view.findViewById(R.id.btnMission);
@@ -47,6 +52,23 @@ public class HomeFragment extends Fragment {
         tvCatLevel = view.findViewById(R.id.tvCatLevel);
         catImage = view.findViewById(R.id.catImage);
         expBar = view.findViewById(R.id.expBar);
+
+        // === 추가: 홈 화면 오늘 메모 불러오기 시작 ===
+        // SharedPreferences 초기화 (이름 통일: calendar_memo_prefs)
+        SharedPreferences memoPrefs = requireContext()
+                .getSharedPreferences("calendar_memo_prefs", Context.MODE_PRIVATE);
+
+        // 오늘 키 생성 (접두어 memo_ 포함)
+        String todayKey = getTodayKey();
+        String memo = memoPrefs.getString(todayKey, "").trim();
+
+        // 메모 유무에 따라 todaySchedule 텍스트 변경
+        if (memo.isEmpty()) {
+            todaySchedule.setText("오늘은 한가로운 날이에요! 😊");
+        } else {
+            todaySchedule.setText("오늘은 \"" + memo + "\"(이)가 있는 날이에요!");
+        }
+        // === 추가: 홈 화면 오늘 메모 불러오기 끝 ===
 
         // 고양이 클릭시 CatDetailActivity intent
         catImage.setOnClickListener(v -> {
@@ -112,5 +134,10 @@ public class HomeFragment extends Fragment {
         // 고양이 이미지 업데이트 (CatDetailActivity의 getCurrentCatImageRes() 메서드와 동일한 로직 사용)
         int imageResId = CatDetailActivity.getCurrentCatImageRes(currentLevel); // public static으로 변경했음을 가정
         catImage.setImageResource(imageResId);
+    }
+
+    private String getTodayKey() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+        return "memo_" + sdf.format(new Date());
     }
 }
