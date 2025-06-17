@@ -11,10 +11,13 @@
         <item name="buttonStyle">@style/RoundedButton</item>
 
         <!-- 카드뷰 둥글게 -->
-        <item name="cardViewStyle">@style/RoundedCard</item>
+
+
+        <item name="cardViewStyle">@style/Widget.MaterialComponents.CardView</item>
 
         <!-- EditText 둥글게 -->
         <item name="editTextStyle">@style/RoundedEditText</item>
+
     </style>
 
     <!-- 실제 앱 테마는 Base.Theme.CampusCat 상속 -->

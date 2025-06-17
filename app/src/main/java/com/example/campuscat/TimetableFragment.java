@@ -6,11 +6,18 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,26 +41,27 @@ public class TimetableFragment extends Fragment {
     private static final String KEY_ITEMS  = "timetable_items";
     private static final int ROW_HEIGHT_DP = 30; // 30분당 30dp
 
-    private LinearLayout layoutEmpty,
-            layoutTimeLabels,
-            layoutDayLabels,
-            layoutTimetableList;
-    private ScrollView   layoutContent;
-    private FrameLayout  timetableGrid;
-    private Button       btnAddFirst,
-            btnAddMore;
+    private LinearLayout layoutEmpty;
+    private ScrollView layoutContent;
+    private LinearLayout layoutTimeLabels;
+    private LinearLayout layoutDayLabels;
+    private FrameLayout timetableGrid;
+    private LinearLayout layoutTimetableList;
+    private Button btnAddFirst;
+    private Button btnAddMore;
 
     private ArrayList<TimetableItem> timetableItems = new ArrayList<>();
     private SharedPreferences prefs;
     private Gson prefsGson = new Gson();
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_timetable, container, false);
 
-        // bind views
+        // 뷰 바인딩
         layoutEmpty         = v.findViewById(R.id.layout_empty);
         layoutContent       = v.findViewById(R.id.layout_content);
         layoutTimeLabels    = v.findViewById(R.id.layout_time_labels);
@@ -63,13 +71,11 @@ public class TimetableFragment extends Fragment {
         btnAddFirst         = v.findViewById(R.id.btn_add_first);
         btnAddMore          = v.findViewById(R.id.btn_add_more);
 
-        prefs = requireContext()
-                .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
         initLabels();
         loadTimetable();
 
-        // if saved items exist, show and lay them out
         if (!timetableItems.isEmpty()) {
             layoutEmpty.setVisibility(View.GONE);
             layoutContent.setVisibility(View.VISIBLE);
@@ -83,7 +89,7 @@ public class TimetableFragment extends Fragment {
         }
 
         btnAddFirst.setOnClickListener(x -> showAddDialog());
-        btnAddMore .setOnClickListener(x -> showAddDialog());
+        btnAddMore.setOnClickListener(x -> showAddDialog());
 
         return v;
     }
@@ -92,7 +98,7 @@ public class TimetableFragment extends Fragment {
         layoutEmpty.setVisibility(View.VISIBLE);
         layoutContent.setVisibility(View.GONE);
 
-        // time labels 9:00–18:00, 1 hour steps
+        // 시간 라벨 (9:00–18:00)
         for (int h = 9; h <= 18; h++) {
             TextView tv = new TextView(getContext());
             tv.setText(String.format(Locale.KOREA, "%02d:00", h));
@@ -103,17 +109,16 @@ public class TimetableFragment extends Fragment {
             layoutTimeLabels.addView(tv);
 
             View line = new View(getContext());
-            LinearLayout.LayoutParams lp =
-                    new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            dpToPx(1)
-                    );
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    dpToPx(1)
+            );
             line.setLayoutParams(lp);
             line.setBackgroundColor(Color.parseColor("#DDDDDD"));
             layoutTimeLabels.addView(line);
         }
 
-        // day labels Mon–Fri
+        // 요일 라벨 (월–금)
         String[] days = {"월","화","수","목","금"};
         for (String d : days) {
             TextView day = new TextView(getContext());
@@ -121,28 +126,28 @@ public class TimetableFragment extends Fragment {
             day.setGravity(Gravity.CENTER);
             day.setTextSize(18);
             day.setTextColor(Color.parseColor("#1A274D"));
-            LinearLayout.LayoutParams p =
-                    new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+                    0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f
+            );
             day.setLayoutParams(p);
             layoutDayLabels.addView(day);
         }
     }
 
     private void showAddDialog() {
-        View dlg = LayoutInflater.from(getContext())
+        View dlg = LayoutInflater.from(requireContext())
                 .inflate(R.layout.dialog_add_timetable, null);
-        AlertDialog.Builder b = new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(requireContext())
                 .setTitle("시간표 항목 추가")
-                .setView(dlg);
-
-        EditText es  = dlg.findViewById(R.id.edit_subject);
-        EditText ep  = dlg.findViewById(R.id.edit_place);
-        EditText ed  = dlg.findViewById(R.id.edit_day);
-        EditText est = dlg.findViewById(R.id.edit_start_time);
-        EditText en  = dlg.findViewById(R.id.edit_end_time);
-
-        b.setPositiveButton("추가", (d,i) -> {
-                    TimetableItem item = createFromInputs(es, ep, ed, est, en);
+                .setView(dlg)
+                .setPositiveButton("추가", (dialog, which) -> {
+                    TimetableItem item = createFromInputs(
+                            dlg.findViewById(R.id.edit_subject),
+                            dlg.findViewById(R.id.edit_place),
+                            dlg.findViewById(R.id.edit_day),
+                            dlg.findViewById(R.id.edit_start_time),
+                            dlg.findViewById(R.id.edit_end_time)
+                    );
                     if (item == null) return;
 
                     timetableItems.add(item);
@@ -154,32 +159,25 @@ public class TimetableFragment extends Fragment {
                         int colW   = timetableGrid.getWidth() / 5;
                         placeBlock(item, gridPx, colW);
                     });
-                }).setNegativeButton("취소", null)
+                })
+                .setNegativeButton("취소", null)
                 .show();
     }
 
     private void showEditDialog(TimetableItem item, TextView cell, View card) {
-        View dlg = LayoutInflater.from(getContext())
+        View dlg = LayoutInflater.from(requireContext())
                 .inflate(R.layout.dialog_add_timetable, null);
-        AlertDialog.Builder b = new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(requireContext())
                 .setTitle("시간표 항목 수정")
-                .setView(dlg);
-
-        EditText es  = dlg.findViewById(R.id.edit_subject);
-        EditText ep  = dlg.findViewById(R.id.edit_place);
-        EditText ed  = dlg.findViewById(R.id.edit_day);
-        EditText est = dlg.findViewById(R.id.edit_start_time);
-        EditText en  = dlg.findViewById(R.id.edit_end_time);
-
-        // fill current values
-        es.setText(item.getSubject());
-        ep.setText(item.getPlace());
-        ed.setText(item.getDay());
-        est.setText(item.getStartTime());
-        en.setText(item.getEndTime());
-
-        b.setPositiveButton("저장", (d,i) -> {
-                    TimetableItem edited = createFromInputs(es, ep, ed, est, en);
+                .setView(dlg)
+                .setPositiveButton("저장", (dialog, which) -> {
+                    TimetableItem edited = createFromInputs(
+                            dlg.findViewById(R.id.edit_subject),
+                            dlg.findViewById(R.id.edit_place),
+                            dlg.findViewById(R.id.edit_day),
+                            dlg.findViewById(R.id.edit_start_time),
+                            dlg.findViewById(R.id.edit_end_time)
+                    );
                     if (edited == null) return;
 
                     item.setSubject(edited.getSubject());
@@ -189,22 +187,22 @@ public class TimetableFragment extends Fragment {
                     item.setEndTime(edited.getEndTime());
                     saveTimetable();
 
-                    // update cell layout & text
                     int gridPx = dpToPx(ROW_HEIGHT_DP * 18);
                     int colW   = timetableGrid.getWidth() / 5;
                     updateCellLayout(item, cell, gridPx, colW);
 
-                    TextView tv = card.findViewById(R.id.text_timetable_item);
-                    tv.setText(formatCardText(item));
-                }).setNegativeButton("취소", null)
+                    ((TextView)card.findViewById(R.id.text_timetable_item))
+                            .setText(formatCardText(item));
+                })
+                .setNegativeButton("취소", null)
                 .show();
     }
 
     private void showDeleteConfirm(TimetableItem it, View cell, View card) {
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(requireContext())
                 .setTitle("삭제 확인")
                 .setMessage("정말로 해당 강의를 삭제하시겠습니까?")
-                .setPositiveButton("삭제", (d,idx) -> {
+                .setPositiveButton("삭제", (dialog, which) -> {
                     layoutTimetableList.removeView(card);
                     timetableGrid.removeView(cell);
                     timetableItems.remove(it);
@@ -218,17 +216,61 @@ public class TimetableFragment extends Fragment {
                 .show();
     }
 
-    private TimetableItem createFromInputs(EditText es, EditText ep,
-                                           EditText ed, EditText est,
-                                           EditText en) {
-        String s  = es .getText().toString().trim();
-        String p  = ep .getText().toString().trim();
-        String d  = ed .getText().toString().trim();
+    private void placeBlock(TimetableItem it, int gridPx, int colW) {
+        // 위치 및 크기 계산
+        FrameLayout.LayoutParams flp = computeLayoutParams(it, gridPx, colW);
+
+        // 셀 뷰 추가
+        TextView cell = new TextView(getContext());
+        cell.setText(Html.fromHtml(
+                "<b>"+it.getSubject()+"</b><br><small>"+it.getPlace()+"</small>"
+        ));
+        cell.setGravity(Gravity.CENTER);
+        cell.setTextColor(Color.WHITE);
+        cell.setPadding(dpToPx(6), dpToPx(6), dpToPx(6), dpToPx(6));
+        cell.setTextSize(15);
+        cell.setBackgroundColor(Color.parseColor(
+                COLORS[new Random().nextInt(COLORS.length)]));
+        cell.setLayoutParams(flp);
+        timetableGrid.addView(cell);
+
+        // CardView 오버레이 테마 사용
+        ContextThemeWrapper themedContext = new ContextThemeWrapper(
+                requireContext(),
+                R.style.CardViewOverlay
+        );
+        LayoutInflater inflater = LayoutInflater.from(themedContext);
+        View card = inflater.inflate(
+                R.layout.item_timetable,
+                layoutTimetableList,
+                false
+        );
+
+        TextView tv = card.findViewById(R.id.text_timetable_item);
+        Button del = card.findViewById(R.id.btn_delete_timetable_item);
+        tv.setText(formatCardText(it));
+        del.setOnClickListener(v -> showDeleteConfirm(it, cell, card));
+        card.setOnClickListener(v -> showEditDialog(it, cell, card));
+        layoutTimetableList.addView(card);
+    }
+
+    private void updateCellLayout(TimetableItem it, TextView cell, int gridPx, int colW) {
+        FrameLayout.LayoutParams flp = computeLayoutParams(it, gridPx, colW);
+        cell.setLayoutParams(flp);
+        cell.setText(Html.fromHtml(
+                "<b>"+it.getSubject()+"</b><br><small>"+it.getPlace()+"</small>"
+        ));
+    }
+
+    private TimetableItem createFromInputs(EditText es, EditText ep, EditText ed,
+                                           EditText est, EditText en) {
+        String s  = es.getText().toString().trim();
+        String p  = ep.getText().toString().trim();
+        String d  = ed.getText().toString().trim();
         String st = est.getText().toString().trim();
-        String et = en .getText().toString().trim();
+        String et = en.getText().toString().trim();
         if (s.isEmpty()||d.isEmpty()||st.isEmpty()||et.isEmpty()) {
-            Toast.makeText(getContext(),
-                    "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return null;
         }
         return new TimetableItem(s, p, d, st, et);
@@ -241,91 +283,30 @@ public class TimetableFragment extends Fragment {
         }
     }
 
-    private void placeBlock(TimetableItem it, int gridPx, int colW) {
-        // calculate position & size
-        FrameLayout.LayoutParams flp = computeLayoutParams(it, gridPx, colW);
-
-        // create cell view
-        TextView cell = new TextView(getContext());
-        cell.setText(Html.fromHtml(
-                "<b>"+it.getSubject()+"</b><br><small>"+it.getPlace()+"</small>"
-        ));
-        cell.setGravity(Gravity.CENTER);
-        cell.setTextColor(Color.WHITE);
-        cell.setPadding(dpToPx(6),dpToPx(6),dpToPx(6),dpToPx(6));
-        cell.setTextSize(15);
-        cell.setBackgroundColor(Color.parseColor(
-                COLORS[new Random().nextInt(COLORS.length)]));
-        cell.setLayoutParams(flp);
-        timetableGrid.addView(cell);
-
-        // inflate card
-        View card = LayoutInflater.from(getContext())
-                .inflate(R.layout.item_timetable, layoutTimetableList, false);
-
-        TextView tv = card.findViewById(R.id.text_timetable_item);
-        Button del = card.findViewById(R.id.btn_delete_timetable_item);
-        tv.setText(formatCardText(it));
-
-        // delete listener
-        del.setOnClickListener(v ->
-                showDeleteConfirm(it, cell, card)
-        );
-
-        // edit listener on card root
-        card.setOnClickListener(v ->
-                showEditDialog(it, cell, card)
-        );
-
-        layoutTimetableList.addView(card);
+    private int parseTimeToMin(String raw) {
+        if (raw == null) return 9 * 60;
+        String[] parts = raw.trim().split(":");
+        try { return Integer.parseInt(parts[0].trim()) * 60 +
+                (parts.length > 1 ? Integer.parseInt(parts[1].trim()) : 0);
+        } catch (NumberFormatException ex) { return 9 * 60; }
     }
 
-    private void updateCellLayout(TimetableItem it, TextView cell,
-                                  int gridPx, int colW) {
-        FrameLayout.LayoutParams flp = computeLayoutParams(it, gridPx, colW);
-        cell.setLayoutParams(flp);
-        cell.setText(Html.fromHtml(
-                "<b>"+it.getSubject()+"</b><br><small>"+it.getPlace()+"</small>"
-        ));
-    }
-
-    private FrameLayout.LayoutParams computeLayoutParams(TimetableItem it,
-                                                         int gridPx, int colW) {
+    private FrameLayout.LayoutParams computeLayoutParams(TimetableItem it, int gridPx, int colW) {
         int sMin = parseTimeToMin(it.getStartTime());
         int eMin = parseTimeToMin(it.getEndTime());
-        float ppm = dpToPx(ROW_HEIGHT_DP) / 30f; // 1dp per 1 min
+        float ppm = dpToPx(ROW_HEIGHT_DP) / 30f;
         int top  = Math.round((sMin - 9*60) * ppm);
         int hPx  = Math.round((eMin - sMin) * ppm);
-        int col  = Math.max(0,
-                "월화수목금".indexOf(it.getDay().substring(0,1))
-        );
-
-        FrameLayout.LayoutParams p =
-                new FrameLayout.LayoutParams(colW, hPx);
+        int col  = Math.max(0, "월화수목금".indexOf(it.getDay().substring(0,1)));
+        FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(colW, hPx);
         p.leftMargin = col * colW;
         p.topMargin  = top;
         return p;
     }
 
     private String formatCardText(TimetableItem it) {
-        return it.getSubject()+" / "+
-                it.getDay()+"요일 / "+
-                it.getStartTime()+" ~ "+
-                it.getEndTime()+
-                (it.getPlace().isEmpty()?"":" / "+it.getPlace());
-    }
-
-    private int parseTimeToMin(String raw) {
-        if (raw == null) return 9*60;
-        String t = raw.trim();
-        String[] p = t.split(":");
-        try {
-            int h = Integer.parseInt(p[0].trim());
-            int m = (p.length>1)? Integer.parseInt(p[1].trim()):0;
-            return h*60 + m;
-        } catch(Exception ex) {
-            return 9*60;
-        }
+        return it.getSubject() + " / " + it.getDay() + "요일 / " + it.getStartTime() + " ~ " +
+                it.getEndTime() + (it.getPlace().isEmpty()?"":" / "+it.getPlace());
     }
 
     private void saveTimetable() {
@@ -337,14 +318,13 @@ public class TimetableFragment extends Fragment {
     private void loadTimetable() {
         String j = prefs.getString(KEY_ITEMS, "");
         if (!j.isEmpty()) {
-            Type t = new TypeToken<ArrayList<TimetableItem>>(){}.getType();
+            Type t = new TypeToken<ArrayList<TimetableItem>>() {}.getType();
             timetableItems = prefsGson.fromJson(j, t);
         }
     }
 
     private int dpToPx(int dp) {
-        return Math.round(
-                dp * getResources().getDisplayMetrics().density
-        );
+        return Math.round(dp * getResources().getDisplayMetrics().density);
     }
 }
+
