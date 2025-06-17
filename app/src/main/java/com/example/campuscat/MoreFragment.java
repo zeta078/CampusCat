@@ -59,8 +59,9 @@ public class MoreFragment extends Fragment {
         menuCafeteria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 학식 프래그먼트로 이동하는 코드
-                // replaceFragment(new CafeteriaFragment());
+                Intent intent = new Intent(getActivity(), CafeteriaActivity.class);
+                startActivity(intent);
+
                 Log.d("MoreFragment", "학식 메뉴 클릭됨"); // 디버깅용
             }
         });

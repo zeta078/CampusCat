@@ -46,7 +46,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         datePicker.addOnPositiveButtonClickListener(selection -> {
             String selectedDate = new SimpleDateFormat("yyyy-M-d", Locale.getDefault()).format(new Date(selection));
-            Intent intent = new Intent(CalendarActivity.this, CafeteriaFragment.class);
+            Intent intent = new Intent(CalendarActivity.this, CafeteriaActivity.class);
             intent.putExtra("selectedDate", selectedDate);
             startActivity(intent);
             finish();

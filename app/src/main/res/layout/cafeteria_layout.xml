@@ -43,11 +43,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/btnBreakfast"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:text="아침"
+            android:textSize="14sp"
             android:textColor="#FFFFFF"
             app:backgroundTint="#2D4DC2"
             app:cornerRadius="24dp"
@@ -55,21 +56,23 @@
             app:iconGravity="textStart"
             android:layout_marginEnd="8dp" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/btnLunch"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:text="점심"
+            android:textSize="14sp"
             android:textColor="#FFFFFF"
             app:backgroundTint="#2D4DC2"
             app:cornerRadius="24dp"
             android:layout_marginEnd="8dp" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/btnDinner"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:text="저녁"
+            android:textSize="14sp"
             android:textColor="#FFFFFF"
             app:backgroundTint="#2D4DC2"
             app:cornerRadius="24dp" />
@@ -93,7 +96,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="달력 열기"
-        android:src="@drawable/ic_calendar"
         android:layout_margin="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
