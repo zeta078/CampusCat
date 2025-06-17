@@ -2,10 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 앱 알림 권한 -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+
 
     <application
         android:allowBackup="true"
@@ -18,7 +27,6 @@
         android:theme="@style/Theme.CampusCat"
         tools:targetApi="31">
 
-        <!-- 메인 액티비티 -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -28,19 +36,28 @@
             </intent-filter>
         </activity>
 
-        <!-- 고양이 상세 액티비티 -->
         <activity android:name=".CatDetailActivity" android:exported="false"/>
 
-        <!-- 인벤토리 액티비티 -->
         <activity android:name=".InventoryActivity" android:exported="false"/>
 
-        <activity android:name=".MiniGameActivity" />
-        <activity android:name=".PlayWithActivity" />
-        <!-- 플래너 리시버 -->
+        <activity android:name=".MiniGameActivity" android:exported="false" />
+        <activity android:name=".PlayWithActivity" android:exported="false" />
+
+        <service
+            android:name=".AttendanceCheckerService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+        <receiver
+            android:name=".GeofenceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+
         <receiver
             android:name=".PlannerResetReceiver"
             android:enabled="true"
-            android:exported="true" />
-    </application>
+            android:exported="false" /> </application>
 
 </manifest>

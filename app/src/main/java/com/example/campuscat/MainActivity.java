@@ -1,28 +1,45 @@
 package com.example.campuscat;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-// FragmentTransaction은 이미 상위에 import 되어 있어 중복 제거
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final int REQUEST_ALL_PERMISSIONS = 1001;
+    private static final int REQUEST_EXACT_ALARM_PERMISSION = 1002; // 정확한 알람 권한 요청 코드 추가
 
     private BottomNavigationView bottomNavigationView;
 
-    // **** 프래그먼트 인스턴스 선언 ****
     private HomeFragment homeFragment;
     private CalendarFragment calendarFragment;
     private PlannerFragment plannerFragment;
     private TimetableFragment timetableFragment;
     private MoreFragment moreFragment;
-    private StudyFragment studyFragment; // StudyFragment 추가
-    // ****************************
+    private StudyFragment studyFragment;
+
+    // 보류된 권한 목록
+    private List<String> pendingPermissions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,31 +47,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
-        bottomNavigationView.setSelectedItemId(R.id.nav_home); // 앱 시작 시 홈 탭 선택
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (savedInstanceState == null) {
-            // **** 모든 프래그먼트 인스턴스 생성 (앱 시작 시 한 번만) ****
             homeFragment = new HomeFragment();
             calendarFragment = new CalendarFragment();
             plannerFragment = new PlannerFragment();
             timetableFragment = new TimetableFragment();
             moreFragment = new MoreFragment();
-            studyFragment = new StudyFragment(); // StudyFragment 인스턴스 생성
+            studyFragment = new StudyFragment();
 
-            // **** 핵심: StudyFragment에 PlannerFragment 인스턴스 주입 ****
-            // StudyFragment가 PlannerFragment의 updateStudyTime() 메서드를 호출할 수 있도록 연결합니다.
             studyFragment.setPlannerFragment(plannerFragment);
-            // ************************************************************
 
-            // 앱 시작 시 HomeFragment를 기본으로 표시
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, homeFragment, HomeFragment.class.getName())
                     .commit();
+
+            // 앱 시작 시 권한 요청
+            requestAllPermissions();
+
         } else {
-            // 액티비티가 재생성될 때 (예: 화면 회전), 기존 프래그먼트 인스턴스를 찾아서 연결합니다.
-            // replace 시 사용한 태그 (여기서는 클래스 이름)를 사용하여 찾습니다.
             homeFragment = (HomeFragment) fragmentManager.findFragmentByTag(HomeFragment.class.getName());
             calendarFragment = (CalendarFragment) fragmentManager.findFragmentByTag(CalendarFragment.class.getName());
             plannerFragment = (PlannerFragment) fragmentManager.findFragmentByTag(PlannerFragment.class.getName());
@@ -62,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
             moreFragment = (MoreFragment) fragmentManager.findFragmentByTag(MoreFragment.class.getName());
             studyFragment = (StudyFragment) fragmentManager.findFragmentByTag(StudyFragment.class.getName());
 
-            // 복원된 StudyFragment에 PlannerFragment 참조가 끊어졌을 수 있으므로 다시 주입을 시도합니다.
             if (studyFragment != null && plannerFragment != null) {
                 studyFragment.setPlannerFragment(plannerFragment);
             }
@@ -87,9 +100,7 @@ public class MainActivity extends AppCompatActivity {
                             selected = moreFragment;
                         }
 
-
                         if (selected != null) {
-                            // 선택된 프래그먼트로 전환하고, 클래스 이름을 태그로 부여합니다.
                             fragmentManager.beginTransaction()
                                     .replace(R.id.fragment_container, selected, selected.getClass().getName())
                                     .commit();
@@ -100,12 +111,120 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    // **** 새로 추가되는 부분: MoreFragment에서 StudyFragment로 전환을 요청할 메서드 ****
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 정확한 알람 권한 요청 후 앱으로 돌아왔을 때 남은 권한 요청 처리
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            if (alarmManager != null && alarmManager.canScheduleExactAlarms() && !pendingPermissions.isEmpty()) {
+                requestRemainingPermissions();
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    private void requestExactAlarmPermission() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
+            Toast.makeText(this, "정확한 알람을 위해 '알람 및 미리 알림' 권한을 허용해주세요.", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+            intent.setData(Uri.fromParts("package", getPackageName(), null));
+            startActivityForResult(intent, REQUEST_EXACT_ALARM_PERMISSION); // startActivityForResult 사용
+        } else {
+            // 이미 권한이 있거나, S 버전 미만일 경우 바로 남은 권한 요청
+            requestRemainingPermissions();
+        }
+    }
+
+    private void requestAllPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            pendingPermissions.clear(); // 초기화
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                pendingPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                pendingPermissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    pendingPermissions.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+                }
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    pendingPermissions.add(Manifest.permission.POST_NOTIFICATIONS);
+                }
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // S 버전 이상에서는 정확한 알람 권한을 먼저 요청하고, 그 다음에 다른 권한 요청
+                requestExactAlarmPermission();
+            } else {
+                // S 버전 미만에서는 바로 남은 권한 요청
+                requestRemainingPermissions();
+            }
+        } else {
+            Toast.makeText(this, "이 기기는 런타임 권한 요청이 필요 없습니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void requestRemainingPermissions() {
+        if (!pendingPermissions.isEmpty()) {
+            ActivityCompat.requestPermissions(this,
+                    pendingPermissions.toArray(new String[0]),
+                    REQUEST_ALL_PERMISSIONS);
+            pendingPermissions.clear(); // 요청 후 목록 비우기
+        } else {
+            Toast.makeText(this, "필수 권한이 모두 허용되었습니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_EXACT_ALARM_PERMISSION) {
+            // 정확한 알람 권한 설정 화면에서 돌아왔을 때
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                if (alarmManager != null && alarmManager.canScheduleExactAlarms()) {
+                    Toast.makeText(this, "정확한 알람 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "정확한 알람 권한이 거부되었습니다.", Toast.LENGTH_LONG).show();
+                }
+            }
+            // 이제 남은 권한들을 요청합니다.
+            requestRemainingPermissions();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_ALL_PERMISSIONS) {
+            boolean allGranted = true;
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    String deniedPermission = permissions[i];
+                    Toast.makeText(this, deniedPermission + " 권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            if (allGranted) {
+                Toast.makeText(this, "모든 필수 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "일부 필수 권한이 거부되었습니다. 앱 사용에 제한이 있을 수 있습니다.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     public void showStudyFragment() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, studyFragment, StudyFragment.class.getName())
-                .addToBackStack(null) // '뒤로가기' 버튼으로 MoreFragment로 돌아갈 수 있도록 스택에 추가
+                .addToBackStack(null)
                 .commit();
     }
-    // ********************************************************************************
 }
