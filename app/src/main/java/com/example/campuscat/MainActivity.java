@@ -3,7 +3,6 @@ package com.example.campuscat;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 액티비티가 처음 생성될 때만 프래그먼트를 추가 (화면 회전 시 중복 생성 방지)
         if (savedInstanceState == null) {
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 

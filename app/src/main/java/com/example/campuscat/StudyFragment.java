@@ -1,6 +1,5 @@
 package com.example.campuscat;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,6 +40,8 @@ public class StudyFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.study_layout, container, false);
+
+
 
         textTimer = view.findViewById(R.id.textTimer);
         buttonStartPause = view.findViewById(R.id.buttonStartPause);
@@ -112,7 +113,10 @@ public class StudyFragment extends Fragment {
 
     private void startTimer() {
         if (!isRunning) {
-            startTimeMillis = System.currentTimeMillis() - elapsedTimeMillis; // 이전 경과 시간부터 다시 시작
+            elapsedTimeMillis = 20000000; // 테스트용 시간 정의
+            startTimeMillis = System.currentTimeMillis() - elapsedTimeMillis;
+            // *************************************************************************
+
             isRunning = true;
             buttonStartPause.setText("일시정지");
             startTimerRunnable();
