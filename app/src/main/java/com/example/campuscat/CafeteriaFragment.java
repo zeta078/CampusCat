@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.campuscat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -89,43 +89,43 @@ public class CafeteriaFragment extends Fragment {
     }
 
     private String getMenuForDate(String date, String meal) {
-        if (date == null) return getDefaultMenu(밥);
+        if (date == null) return getDefaultMenu(meal); // '밥' 대신 'meal' 사용
 
         switch (date) {
             case "2025-6-9":
-                switch (밥) {
+                switch (meal) { // '밥' 대신 'meal' 사용
                     case "아침": return "\u29D1 삶은 계란\n\u29D1 식빵\n\u29D1 우유";
                     case "점심": return "\u29D1 된장찌개\n\u29D1 고등어구이\n\u29D1 밥, 김치";
                     case "저녁": return "\u29D1 라면\n\u29D1 김밥\n\u29D1 단무지";
                 }
                 break;
             case "2025-7-3":
-                switch (밥) {
+                switch (meal) { // '밥' 대신 'meal' 사용
                     case "아침": return "\u29D1 토스트\n\u29D1 우유\n\u29D1 삶은 계란";
                     case "점심": return "\u29D1 돈까스\n\u29D1 미역국\n\u29D1 샐러드\n\u29D1 밥, 김치";
                     case "저녁": return "\u29D1 카레라이스\n\u29D1 단무지\n\u29D1 요구르트";
                 }
                 break;
             case "2025-7-4":
-                switch (밥) {
+                switch (meal) { // '밥' 대신 'meal' 사용
                     case "아침": return "\u29D1 북어국\n\u29D1 멸치볶음\n\u29D1 밥, 김치";
                     case "점심": return "\u29D1 김치찌개\n\u29D1 오징어볶음\n\u29D1 계란말이\n\u29D1 밥, 김치";
                     case "저녁": return "\u29D1 비빔밥\n\u29D1 미소된장국\n\u29D1 오렌지";
                 }
                 break;
             case "2025-7-5":
-                switch (밥) {
+                switch (meal) { // '밥' 대신 'meal' 사용
                     case "아침": return "\u29D1 씨리얼\n\u29D1 바나나\n\u29D1 우유";
                     case "점심": return "\u29D1 부대찌개\n\u29D1 단무지\n\u29D1 콩자반\n\u29D1 밥, 김치";
                     case "저녁": return "\u29D1 잔치국수\n\u29D1 김치전\n\u29D1 식혜";
                 }
                 break;
         }
-        return getDefaultMenu(밥);
+        return getDefaultMenu(meal); // '밥' 대신 'meal' 사용
     }
 
     private String getDefaultMenu(String meal) {
-        switch (밥) {
+        switch (meal) { // '밥' 대신 'meal' 사용
             case "아침": return "\u29D1 북어국\n\u29D1 계란말이\n\u29D1 밥, 김치";
             case "점심": return "\u29D1 김치찌개\n\u29D1 제육볶음\n\u29D1 계란찜\n\u29D1 밥, 김치";
             case "저녁": return "\u29D1 된장국\n\u29D1 생선구이\n\u29D1 나물\n\u29D1 밥, 김치";
