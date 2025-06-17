@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FDFDFD"
+    android:padding="16dp">
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:gravity="center_horizontal">
+
+<!-- 캘린더 뷰 -->
+<CalendarView
+    android:id="@+id/calendarView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp" />
+
+<!-- 선택된 날짜 텍스트 -->
+<TextView
+    android:id="@+id/textSelectedDate"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="선택된 날짜: "
+    android:textSize="18sp"
+    android:textColor="#1A274D"
+android:paddingBottom="12dp" />
+
+<!-- 저장된 메모 표시 -->
+<TextView
+    android:id="@+id/textSavedMemo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:textColor="#1A274D"
+    android:textSize="16sp"
+    android:background="#D5ECFF"
+android:visibility="gone"
+android:layout_marginBottom="12dp" />
+
+<!-- 메모 입력 칸 -->
+<EditText
+    android:id="@+id/editMemo"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:hint="OO월 OO일에 일정 추가"
+    android:background="#FFF4C2"
+android:padding="12dp"
+android:textColor="#000000"
+android:textSize="16sp"
+android:gravity="top"
+android:inputType="textMultiLine"
+android:maxLines="6"
+android:scrollbars="vertical"
+android:overScrollMode="always"
+android:layout_marginBottom="12dp" />
+
+<!-- 저장 버튼 -->
+<Button
+    android:id="@+id/btnSave"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="저장"
+    android:backgroundTint="#FFE275"
+android:textColor="#000000"
+android:textSize="16sp"
+android:layout_marginBottom="8dp" />
+
+<!-- 삭제 버튼 -->
+<Button
+    android:id="@+id/btnDelete"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="삭제"
+    android:backgroundTint="#FF5252"
+android:textColor="#000000"
+android:textSize="16sp"
+android:visibility="gone" />
+
+</LinearLayout>
+    </ScrollView>
