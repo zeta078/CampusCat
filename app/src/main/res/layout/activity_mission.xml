@@ -2,16 +2,117 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FDFDFD"
+    android:padding="16dp"
+    tools:context=".MissionActivity">
 
+    <!-- 상단 타이틀 -->
     <TextView
-        android:id="@+id/textMission"
+        android:id="@+id/tvMissionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="미션 화면입니다!"
+        android:text="오늘의 미션"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#1A274D"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="32dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"/>
+
+    <!-- 미션 1: 놀아주기 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardPlayMission"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="#D5ECFF"
+        app:layout_constraintTop_toBottomOf="@id/tvMissionTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvPlayMissionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="놀아주기 1회"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#1A274D" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="미니게임 한 번 실행"
+                android:textColor="#1A274D"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnPlayMission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="보상받기 (+15 XP)"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#2D4DC2"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- 미션 2: 인벤토리 열기 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardInventoryMission"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="#FFF4C2"
+        app:layout_constraintTop_toBottomOf="@id/cardPlayMission"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvInventoryMissionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인벤토리 열어보기"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#1A274D" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인벤토리 페이지 진입"
+                android:textColor="#1A274D"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnInventoryMission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="보상받기 (+5 XP)"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#2D4DC2"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
