@@ -65,6 +65,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 고양이 이미지 -->
+    <!-- 고양이 이미지 (러그 위에 올라오도록 순서 유지) -->
     <ImageView
         android:id="@+id/catImage"
         android:layout_width="180dp"
@@ -72,23 +73,23 @@
         android:layout_marginTop="56dp"
         android:contentDescription="고양이"
         android:src="@drawable/cat_lv1"
+        android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
 
     <!-- 러그 이미지 -->
     <ImageView
         android:id="@+id/decorRug"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:src="@drawable/decorrug"
         android:contentDescription="러그"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/catImage"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintTop_toTopOf="@id/catImage"
+        app:layout_constraintStart_toStartOf="@id/catImage"
+        app:layout_constraintEnd_toEndOf="@id/catImage"
+        android:layout_marginTop="50dp" />
 
     <!-- 장난감 이미지 -->
     <ImageView
@@ -98,10 +99,9 @@
         android:src="@drawable/decortoy"
         android:contentDescription="장난감"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/catImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintTop_toTopOf="@id/catImage"
+        app:layout_constraintEnd_toStartOf="@id/catImage"
+        android:layout_marginEnd="12dp" />
 
     <!-- 레벨 텍스트 -->
     <TextView
