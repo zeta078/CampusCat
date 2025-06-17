@@ -41,8 +41,6 @@ public class StudyFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.study_layout, container, false);
 
-
-
         textTimer = view.findViewById(R.id.textTimer);
         buttonStartPause = view.findViewById(R.id.buttonStartPause);
         buttonEndStudy = view.findViewById(R.id.buttonEndStudy);
@@ -113,10 +111,9 @@ public class StudyFragment extends Fragment {
 
     private void startTimer() {
         if (!isRunning) {
-            elapsedTimeMillis = 20000000; // 테스트용 시간 정의
-            startTimeMillis = System.currentTimeMillis() - elapsedTimeMillis;
-            // *************************************************************************
+            elapsedTimeMillis = 4000000; // 테스트용 시간 설정
 
+            startTimeMillis = System.currentTimeMillis() - elapsedTimeMillis; // 이전 경과 시간부터 다시 시작
             isRunning = true;
             buttonStartPause.setText("일시정지");
             startTimerRunnable();
