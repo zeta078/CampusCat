@@ -28,6 +28,15 @@
             android:layout_gravity="right"
             android:paddingBottom="24dp"/>
 
+        <TextView
+            android:id="@+id/textTotalGoalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="총 목표 시간: 0시간"
+            android:textSize="16sp"
+            android:layout_gravity="right"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold"/>
         <TableLayout
             android:id="@+id/tableLayoutSubjects"
             android:layout_width="match_parent"
@@ -66,12 +75,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+"
-            android:background="@android:color/transparent"
-            android:textColor="#737373"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:minWidth="48dp"
-            android:minHeight="48dp"/>
+                android:background="@android:color/transparent"
+                android:textColor="#737373"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:minWidth="48dp"
+                android:minHeight="48dp"/>
 
         </LinearLayout>
 
@@ -109,8 +118,7 @@
                 android:padding="10dp"/>
 
             <TextView
-                android:id="@+id/textTotalTime"
-                android:layout_width="match_parent"
+                android:id="@+id/textTotalTime" android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="0시간"/>
