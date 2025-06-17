@@ -290,7 +290,7 @@ public class PlannerFragment extends Fragment {
         updateAchievement(); // 성취도 초기화
 
         // 초기화된 상태를 저장 (새로운 날짜의 빈 플래너 저장)
-        savePlannerData(); // 초기화된 데이터를 SharedPreferences에 저장
+        //savePlannerData(); // 초기화된 데이터를 SharedPreferences에 저장
     }
 
 
