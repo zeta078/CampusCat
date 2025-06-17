@@ -1,158 +1,36 @@
-package com.example.test;
+package com.example.campuscat;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import androidx.appcompat.content.res.AppCompatResources;
-import com.google.android.material.button.MaterialButton;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-public class StudyActivity extends AppCompatActivity {
-
-    private TextView textTimer;
-    private EditText editHours, editMinutes;
-    private MaterialButton btnToggle, btnReset;
-
-    private boolean isRunning = false;
-    private boolean useCountdown = false;
-
-    private long countdownMillis = 0;
-    private long timeRemaining = 0;
-    private long timeElapsed = 0;
-
-    private Handler handler = new Handler();
-    private Runnable timerRunnable;
-    private CountDownTimer countDownTimer;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.study);
+        setContentView(R.layout.activity_main);
 
-        textTimer = findViewById(R.id.textTimer);
-        editHours = findViewById(R.id.editHours);
-        editMinutes = findViewById(R.id.editMinutes);
-        btnToggle = findViewById(R.id.btnToggle);
-        btnReset = findViewById(R.id.btnReset);
+        // 액티비티가 처음 생성될 때만 프래그먼트를 추가합니다.
+        // 화면 회전 등으로 액티비티가 재생성될 때는 이미 프래그먼트가 복원되므로 중복 추가를 막습니다.
+        if (savedInstanceState == null) {
+            // 1. FragmentManager 객체를 가져옵니다.
+            FragmentManager fragmentManager = getSupportFragmentManager();
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D5ECFF")));
-            getSupportActionBar().setTitle("");
+            // 2. FragmentTransaction을 시작합니다. (프래그먼트 작업을 시작)
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            Drawable upArrow = AppCompatResources.getDrawable(this, androidx.appcompat.R.drawable.abc_ic_ab_back_material);
-            if (upArrow != null) {
-                upArrow.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
-                getSupportActionBar().setHomeAsUpIndicator(upArrow);
-            }
+            // 3. 프래그먼트를 생성합니다.
+            StudyFragment dailyPlannerFragment = new StudyFragment();
+
+            // 4. 프래그먼트를 컨테이너에 추가합니다.
+            //    add(컨테이너뷰ID, 프래그먼트 객체)
+            fragmentTransaction.add(R.id.fragment_container, dailyPlannerFragment);
+
+            // 5. 트랜잭션을 커밋하여 변경사항을 적용합니다.
+            fragmentTransaction.commit();
         }
-
-        btnToggle.setOnClickListener(v -> {
-            if (isRunning) {
-                pauseTimer();
-            } else {
-                String hourStr = editHours.getText().toString();
-                String minStr = editMinutes.getText().toString();
-
-                boolean hasInput = !(TextUtils.isEmpty(hourStr) && TextUtils.isEmpty(minStr));
-
-                if (hasInput) {
-                    useCountdown = true;
-                    int hours = TextUtils.isEmpty(hourStr) ? 0 : Integer.parseInt(hourStr);
-                    int minutes = TextUtils.isEmpty(minStr) ? 0 : Integer.parseInt(minStr);
-                    if (timeRemaining == 0) {
-                        countdownMillis = (hours * 60 + minutes) * 60 * 1000;
-                        timeRemaining = countdownMillis;
-                    }
-
-                    textTimer.setText(formatTime(timeRemaining));
-
-                } else {
-                    useCountdown = false;
-                }
-
-                startTimer();
-            }
-        });
-
-        btnReset.setOnClickListener(v -> resetTimer());
-    }
-
-    private void startTimer() {
-        isRunning = true;
-        btnToggle.setText("시작");
-
-        if (useCountdown) {
-            countDownTimer = new CountDownTimer(timeRemaining, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    timeRemaining = millisUntilFinished;
-                    textTimer.setText(formatTime(millisUntilFinished));
-                }
-
-                @Override
-                public void onFinish() {
-                    isRunning = false;
-                    timeRemaining = 0;
-                    textTimer.setText("00:00:00");
-                    btnToggle.setText("시작");
-                }
-            };
-            countDownTimer.start();
-        } else {
-            timerRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    timeElapsed += 1000;
-                    textTimer.setText(formatTime(timeElapsed));
-                    handler.postDelayed(this, 1000);
-                }
-            };
-            handler.post(timerRunnable);
-        }
-    }
-
-    private void pauseTimer() {
-        isRunning = false;
-        btnToggle.setText("시작");
-
-        if (useCountdown && countDownTimer != null) {
-            countDownTimer.cancel();
-        } else if (timerRunnable != null) {
-            handler.removeCallbacks(timerRunnable);
-        }
-    }
-
-    private void resetTimer() {
-        pauseTimer();
-        timeRemaining = 0;
-        timeElapsed = 0;
-        textTimer.setText("00:00:00");
-        btnToggle.setText("시작");
-    }
-
-    private String formatTime(long millis) {
-        int totalSeconds = (int)(millis / 1000);
-        int hours = totalSeconds / 3600;
-        int minutes = (totalSeconds % 3600) / 60;
-        int seconds = totalSeconds % 60;
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
