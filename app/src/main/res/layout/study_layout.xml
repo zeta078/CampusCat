@@ -22,7 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="시작"
-        app:backgroundTint="#2D4DC2"
+        android:textColor="#1A274D"
+        android:textStyle="bold"
         android:textSize="24sp"
         android:padding="16dp"
         android:minWidth="200dp"
@@ -32,11 +33,11 @@
         android:id="@+id/buttonEndStudy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:backgroundTint="#FFB74D"
+        app:backgroundTint="#1A274D"
         android:text="학습 종료"
         android:textSize="24sp"
         android:padding="16dp"
-        android:textColor="@color/black"
+        android:textColor="#D5ECFF"
         android:minWidth="200dp" />
 
 </LinearLayout>

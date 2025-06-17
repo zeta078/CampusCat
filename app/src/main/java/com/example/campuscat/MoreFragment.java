@@ -33,9 +33,11 @@ public class MoreFragment extends Fragment {
         menuSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 설정 프래그먼트로 이동하는 코드
-                // replaceFragment(new SettingsFragment()); // 이 메서드는 아래에서 제거됩니다.
-                Log.d("MoreFragment", "설정 메뉴 클릭됨"); // 디버깅용
+                // 인벤토리 Activity로 이동하는 코드
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(intent);
+
+                Log.d("MoreFragment", "인벤토리 메뉴 클릭됨"); // 디버깅용
             }
         });
 

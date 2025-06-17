@@ -95,11 +95,8 @@ public class HomeFragment extends Fragment {
 
         // ✅ 설정 버튼 → SettingsFragment로 이동 (아직 없음 → 주석 처리)
         btnSettings.setOnClickListener(v -> {
-            // requireActivity().getSupportFragmentManager()
-            //         .beginTransaction()
-            //         .replace(R.id.fragment_container, new SettingsFragment())
-            //         .addToBackStack(null)
-            //         .commit();
+            Intent intent = new Intent(requireContext(), SettingsActivity.class);
+            startActivity(intent);
         });
 
         return view;
