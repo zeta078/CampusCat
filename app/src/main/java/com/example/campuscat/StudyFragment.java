@@ -1,183 +1,188 @@
 package com.example.campuscat;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
-import android.text.TextUtils;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.google.android.material.button.MaterialButton;
+
+import java.util.Locale;
 
 public class StudyFragment extends Fragment {
 
     private TextView textTimer;
-    private EditText editHours, editMinutes;
-    private MaterialButton btnToggle, btnReset;
+    private Button buttonStartPause;
+    private Button buttonEndStudy;
 
-    private boolean isRunning = false;
-    private boolean useCountdown = false;
+    private Handler handler;
+    private Runnable runnable;
+    private long startTimeMillis; // 타이머 시작 시간 (밀리초)
+    private long elapsedTimeMillis = 0; // 경과 시간 (밀리초)
+    private boolean isRunning = false; // 타이머 실행 중 여부
 
-    private long countdownMillis = 0;
-    private long timeRemaining = 0;
-    private long timeElapsed = 0;
+    // PlannerFragment 인스턴스를 가져오기 위함 (MainActivity에서 주입될 것임)
+    private PlannerFragment plannerFragment;
 
-    private Handler handler = new Handler();
-    private Runnable timerRunnable;
-    private CountDownTimer countDownTimer;
-
-    // Fragment 생성자 (필수)
     public StudyFragment() {
         // Required empty public constructor
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // fragment_study.xml 레이아웃을 인플레이트합니다.
-        View view = inflater.inflate(R.layout.fragment_study, container, false);
+        View view = inflater.inflate(R.layout.study_layout, container, false);
 
-        // UI 요소들을 초기화합니다. (view.findViewById 사용)
         textTimer = view.findViewById(R.id.textTimer);
-        editHours = view.findViewById(R.id.editHours);
-        editMinutes = view.findViewById(R.id.editMinutes);
-        btnToggle = view.findViewById(R.id.btnToggle);
-        btnReset = view.findViewById(R.id.btnReset);
+        buttonStartPause = view.findViewById(R.id.buttonStartPause);
+        buttonEndStudy = view.findViewById(R.id.buttonEndStudy);
 
-        // 액션바 관련 코드는 Activity에 종속되므로 Fragment에서는 제거합니다.
-        // 필요하다면 Activity에서 Fragment를 호스팅할 때 액션바를 설정해야 합니다.
+        handler = new Handler(Looper.getMainLooper());
 
-        // btnToggle 클릭 리스너 설정
-        btnToggle.setOnClickListener(v -> {
+        // **** 변경된 부분: 직접 주입된 plannerFragment를 사용하도록 변경 ****
+        // 이 부분에서는 plannerFragment가 null인지 확인하고, null이라면 오류 메시지를 표시합니다.
+        // 이는 MainActivity에서 setPlannerFragment()를 호출하는 것이 필수임을 의미합니다.
+        if (plannerFragment == null) {
+            Log.e("StudyFragment", "PlannerFragment가 StudyFragment에 주입되지 않았습니다. MainActivity에서 setPlannerFragment()를 호출했는지 확인하세요.");
+            Toast.makeText(requireContext(), "플래너 연동 설정 오류. 앱 개발자에게 문의하세요.", Toast.LENGTH_LONG).show();
+            // 이 경우, 학습 종료 버튼을 비활성화하거나 다른 처리를 할 수 있습니다.
+            buttonEndStudy.setEnabled(false);
+            buttonStartPause.setEnabled(false);
+        }
+        // ******************************************************************
+
+
+        // 시작/일시정지 버튼 클릭 리스너
+        buttonStartPause.setOnClickListener(v -> {
             if (isRunning) {
+                // 일시정지 상태
                 pauseTimer();
             } else {
-                String hourStr = editHours.getText().toString();
-                String minStr = editMinutes.getText().toString();
-
-                boolean hasInput = !(TextUtils.isEmpty(hourStr) && TextUtils.isEmpty(minStr));
-
-                if (hasInput) {
-                    useCountdown = true;
-                    int hours = TextUtils.isEmpty(hourStr) ? 0 : Integer.parseInt(hourStr);
-                    int minutes = TextUtils.isEmpty(minStr) ? 0 : Integer.parseInt(minStr);
-                    // 타이머가 리셋된 상태가 아니면 기존 timeRemaining 값을 유지
-                    if (timeRemaining == 0 || (hours * 60 + minutes) * 60 * 1000 != countdownMillis) {
-                        countdownMillis = (hours * 60 + minutes) * 60 * 1000;
-                        timeRemaining = countdownMillis;
-                    }
-                    textTimer.setText(formatTime(timeRemaining)); // 시작 전에 현재 설정된 시간 표시
-                } else {
-                    useCountdown = false;
-                    // 스톱워치 모드에서는 timeRemaining을 초기화
-                    timeRemaining = 0;
-                }
+                // 시작 상태
                 startTimer();
             }
         });
 
-        // btnReset 클릭 리스너 설정
-        btnReset.setOnClickListener(v -> resetTimer());
+        // 학습 종료 버튼 클릭 리스너
+        buttonEndStudy.setOnClickListener(v -> {
+            endStudy();
+        });
+
+        // 초기 타이머 상태 업데이트
+        updateTimerText();
 
         return view;
     }
 
-    // Fragment가 화면에서 사라질 때 타이머를 정리 (메모리 누수 방지)
     @Override
     public void onPause() {
         super.onPause();
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-        }
-        if (timerRunnable != null) {
-            handler.removeCallbacks(timerRunnable);
+        // Fragment가 백그라운드로 갈 때 타이머 중단 (하지만 elapsed 시간은 유지)
+        if (isRunning) {
+            handler.removeCallbacks(runnable); // 타이머 콜백 제거
+            Log.d("StudyFragment", "타이머 일시정지 (onPause)");
         }
     }
 
-    // onResume에서 타이머 상태를 복원하거나 새로 시작하지 않습니다.
-    // 사용자가 다시 Fragment로 돌아왔을 때 버튼을 누르면 새로 시작하도록 설계되어 있습니다.
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Fragment가 다시 포그라운드로 올 때 타이머 재개
+        // (isRunning이 true일 때만, 즉 사용자가 수동으로 멈추지 않았다면 이어서 작동)
+        if (isRunning) {
+            startTimerRunnable();
+            Log.d("StudyFragment", "타이머 재개 (onResume)");
+        }
+    }
 
-    // --- 기존 StudyActivity의 타이머 로직 ---
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        handler.removeCallbacks(runnable); // 뷰가 파괴될 때 모든 콜백 제거
+    }
 
     private void startTimer() {
-        isRunning = true;
-        btnToggle.setText("일시정지"); // 토글 버튼 텍스트 변경
-
-        if (useCountdown) {
-            // 기존 타이머가 있으면 취소
-            if (countDownTimer != null) {
-                countDownTimer.cancel();
-            }
-            countDownTimer = new CountDownTimer(timeRemaining, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    timeRemaining = millisUntilFinished;
-                    textTimer.setText(formatTime(millisUntilFinished));
-                }
-
-                @Override
-                public void onFinish() {
-                    isRunning = false;
-                    timeRemaining = 0;
-                    textTimer.setText("00:00:00");
-                    btnToggle.setText("시작");
-                    // 타이머 종료 후 입력 필드 초기화 (선택 사항)
-                    editHours.setText("");
-                    editMinutes.setText("");
-                }
-            };
-            countDownTimer.start();
-        } else {
-            // 기존 Runnable이 있으면 제거
-            if (timerRunnable != null) {
-                handler.removeCallbacks(timerRunnable);
-            }
-            timerRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    timeElapsed += 1000;
-                    textTimer.setText(formatTime(timeElapsed));
-                    handler.postDelayed(this, 1000);
-                }
-            };
-            handler.post(timerRunnable);
+        if (!isRunning) {
+            startTimeMillis = System.currentTimeMillis() - elapsedTimeMillis; // 이전 경과 시간부터 다시 시작
+            isRunning = true;
+            buttonStartPause.setText("일시정지");
+            startTimerRunnable();
+            Log.d("StudyFragment", "타이머 시작");
         }
     }
 
     private void pauseTimer() {
-        isRunning = false;
-        btnToggle.setText("시작"); // 토글 버튼 텍스트 변경
-
-        if (useCountdown && countDownTimer != null) {
-            countDownTimer.cancel();
-        } else if (timerRunnable != null) {
-            handler.removeCallbacks(timerRunnable);
+        if (isRunning) {
+            handler.removeCallbacks(runnable);
+            isRunning = false;
+            buttonStartPause.setText("시작");
+            Log.d("StudyFragment", "타이머 일시정지");
         }
     }
 
-    private void resetTimer() {
-        pauseTimer(); // 먼저 타이머 중지
-        timeRemaining = 0;
-        timeElapsed = 0;
-        textTimer.setText("00:00:00");
-        btnToggle.setText("시작");
-        // 입력 필드 초기화
-        editHours.setText("");
-        editMinutes.setText("");
+    private void startTimerRunnable() {
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                elapsedTimeMillis = System.currentTimeMillis() - startTimeMillis;
+                updateTimerText();
+                handler.postDelayed(this, 1000); // 1초마다 업데이트
+            }
+        };
+        handler.post(runnable); // 즉시 실행
     }
 
-    private String formatTime(long millis) {
-        int totalSeconds = (int)(millis / 1000);
-        int hours = totalSeconds / 3600;
-        int minutes = (totalSeconds % 3600) / 60;
-        int seconds = totalSeconds % 60;
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    private void updateTimerText() {
+        long seconds = (elapsedTimeMillis / 1000) % 60;
+        long minutes = (elapsedTimeMillis / (1000 * 60)) % 60;
+        long hours = (elapsedTimeMillis / (1000 * 60 * 60));
+
+        String timeFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
+        textTimer.setText(timeFormatted);
+    }
+
+    private void endStudy() {
+        pauseTimer(); // 타이머 일시정지
+
+        // 총 학습 시간 계산 (정수 시간 단위, 분 단위는 버림)
+        int totalStudyHours = (int) (elapsedTimeMillis / (1000 * 60 * 60)); // 밀리초 -> 시간 (정수만)
+
+        // PlannerFragment에 학습 시간 전달
+        if (plannerFragment != null) {
+            plannerFragment.updateStudyTime(totalStudyHours);
+            Toast.makeText(requireContext(), "학습 시간 " + totalStudyHours + "시간이 플래너에 반영되었습니다!", Toast.LENGTH_LONG).show();
+            Log.d("StudyFragment", "학습 시간 " + totalStudyHours + "시간이 PlannerFragment에 전달됨.");
+        } else {
+            Toast.makeText(requireContext(), "플래너를 찾을 수 없어 학습 시간 반영에 실패했습니다. (연동 오류)", Toast.LENGTH_SHORT).show();
+            Log.e("StudyFragment", "PlannerFragment가 null입니다. 학습 시간을 반영할 수 없습니다.");
+        }
+
+        // 타이머 리셋
+        elapsedTimeMillis = 0;
+        updateTimerText();
+        buttonStartPause.setText("시작"); // 버튼 텍스트 '시작'으로 재설정
+        isRunning = false; // 타이머는 멈춘 상태로 시작
+
+        Log.d("StudyFragment", "학습 종료 및 타이머 리셋됨.");
+    }
+
+    // MainHostActivity에서 PlannerFragment 인스턴스를 주입받기 위한 setter
+    public void setPlannerFragment(PlannerFragment fragment) {
+        this.plannerFragment = fragment;
+        Log.d("StudyFragment", "PlannerFragment가 StudyFragment에 주입되었습니다.");
+        // 주입된 후에 UI 활성화를 처리할 수도 있습니다.
+        if (getView() != null && plannerFragment != null) {
+            buttonEndStudy.setEnabled(true);
+            buttonStartPause.setEnabled(true);
+        }
     }
 }
