@@ -27,7 +27,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_ALL_PERMISSIONS = 1001;
-    private static final int REQUEST_EXACT_ALARM_PERMISSION = 1002; // 정확한 알람 권한 요청 코드 추가
+    private static final int REQUEST_EXACT_ALARM_PERMISSION = 1002;
+
+    // 미션 관련 프래그먼트 전환을 위한 상수 추가
+    public static final String ACTION_SHOW_FRAGMENT = "com.example.campuscat.ACTION_SHOW_FRAGMENT";
+    public static final String EXTRA_FRAGMENT_TO_SHOW = "fragment_to_show";
+    public static final String FRAGMENT_MISSION = "mission_fragment"; // 미션 프래그먼트 표시를 위한 상수
 
     private BottomNavigationView bottomNavigationView;
 
@@ -37,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private TimetableFragment timetableFragment;
     private MoreFragment moreFragment;
     private StudyFragment studyFragment;
+    private MissionFragment missionFragment; // 새롭게 추가할 미션 프래그먼트
 
-    // 보류된 권한 목록
     private List<String> pendingPermissions = new ArrayList<>();
 
     @Override
@@ -58,14 +63,15 @@ public class MainActivity extends AppCompatActivity {
             timetableFragment = new TimetableFragment();
             moreFragment = new MoreFragment();
             studyFragment = new StudyFragment();
+            missionFragment = new MissionFragment(); // 미션 프래그먼트 초기화
 
             studyFragment.setPlannerFragment(plannerFragment);
 
+            // 초기 프래그먼트 로드 (홈)
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, homeFragment, HomeFragment.class.getName())
                     .commit();
 
-            // 앱 시작 시 권한 요청
             requestAllPermissions();
 
         } else {
@@ -75,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
             timetableFragment = (TimetableFragment) fragmentManager.findFragmentByTag(TimetableFragment.class.getName());
             moreFragment = (MoreFragment) fragmentManager.findFragmentByTag(MoreFragment.class.getName());
             studyFragment = (StudyFragment) fragmentManager.findFragmentByTag(StudyFragment.class.getName());
+            missionFragment = (MissionFragment) fragmentManager.findFragmentByTag(MissionFragment.class.getName()); // 미션 프래그먼트 찾기
 
             if (studyFragment != null && plannerFragment != null) {
                 studyFragment.setPlannerFragment(plannerFragment);
@@ -109,12 +116,31 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        // Intent에서 프래그먼트 전환 요청 확인
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent); // 새로운 인텐트로 설정 (중요: 기존 인텐트를 대체)
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (intent != null && ACTION_SHOW_FRAGMENT.equals(intent.getAction())) {
+            String fragmentToShow = intent.getStringExtra(EXTRA_FRAGMENT_TO_SHOW);
+            if (FRAGMENT_MISSION.equals(fragmentToShow)) {
+                showMissionFragment(); // 미션 프래그먼트 표시
+            }
+            // 다른 프래그먼트도 필요하다면 여기에 추가
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // 정확한 알람 권한 요청 후 앱으로 돌아왔을 때 남은 권한 요청 처리
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             if (alarmManager != null && alarmManager.canScheduleExactAlarms() && !pendingPermissions.isEmpty()) {
@@ -130,16 +156,15 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "정확한 알람을 위해 '알람 및 미리 알림' 권한을 허용해주세요.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
             intent.setData(Uri.fromParts("package", getPackageName(), null));
-            startActivityForResult(intent, REQUEST_EXACT_ALARM_PERMISSION); // startActivityForResult 사용
+            startActivityForResult(intent, REQUEST_EXACT_ALARM_PERMISSION);
         } else {
-            // 이미 권한이 있거나, S 버전 미만일 경우 바로 남은 권한 요청
             requestRemainingPermissions();
         }
     }
 
     private void requestAllPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            pendingPermissions.clear(); // 초기화
+            pendingPermissions.clear();
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 pendingPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -160,10 +185,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                // S 버전 이상에서는 정확한 알람 권한을 먼저 요청하고, 그 다음에 다른 권한 요청
                 requestExactAlarmPermission();
             } else {
-                // S 버전 미만에서는 바로 남은 권한 요청
                 requestRemainingPermissions();
             }
         } else {
@@ -176,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,
                     pendingPermissions.toArray(new String[0]),
                     REQUEST_ALL_PERMISSIONS);
-            pendingPermissions.clear(); // 요청 후 목록 비우기
+            pendingPermissions.clear();
         } else {
             Toast.makeText(this, "필수 권한이 모두 허용되었습니다.", Toast.LENGTH_SHORT).show();
         }
@@ -186,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_EXACT_ALARM_PERMISSION) {
-            // 정확한 알람 권한 설정 화면에서 돌아왔을 때
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 if (alarmManager != null && alarmManager.canScheduleExactAlarms()) {
@@ -195,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "정확한 알람 권한이 거부되었습니다.", Toast.LENGTH_LONG).show();
                 }
             }
-            // 이제 남은 권한들을 요청합니다.
             requestRemainingPermissions();
         }
     }
@@ -225,6 +246,18 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, studyFragment, StudyFragment.class.getName())
                 .addToBackStack(null)
+                .commit();
+    }
+
+    // MissionFragment를 표시하는 새로운 메서드 추가
+    public void showMissionFragment() {
+        // 하단 네비게이션 뷰에서 해당 항목이 선택된 것처럼 보이도록 설정할 수도 있습니다.
+        // 예를 들어, MissionFragment가 MoreFragment의 서브 항목이라면 nav_more를 선택.
+        // bottomNavigationView.setSelectedItemId(R.id.nav_more);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, missionFragment, MissionFragment.class.getName())
+                .addToBackStack(null) // 뒤로 가기 버튼으로 이전 프래그먼트로 돌아갈 수 있도록
                 .commit();
     }
 }

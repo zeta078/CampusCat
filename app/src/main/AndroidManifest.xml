@@ -42,6 +42,7 @@
 
         <activity android:name=".MiniGameActivity" android:exported="false" />
         <activity android:name=".PlayWithActivity" android:exported="false" />
+        <activity android:name=".MissionActivity" android:exported="false" />
 
         <service
             android:name=".AttendanceCheckerService"

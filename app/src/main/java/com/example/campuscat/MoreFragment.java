@@ -79,16 +79,10 @@ public class MoreFragment extends Fragment {
         menuMission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // MissionFragment도 MainActivity에서 인스턴스를 관리하고 있다면
-                // MainActivity에 showMissionFragment() 같은 메서드를 만들어서 호출하는 것이 좋습니다.
-                // 일단은 기존 방식 유지 (새 인스턴스 생성)
-                if (getParentFragmentManager() != null) {
-                    getParentFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, new MissionFragment(), MissionFragment.class.getName())
-                            .addToBackStack(null)
-                            .commit();
-                    Log.d("MoreFragment", "미션 메뉴 클릭됨 - MissionFragment로 전환");
-                }
+                Intent intent = new Intent(getActivity(), MissionActivity.class);
+                startActivity(intent);
+
+                Log.d("MoreFragment", "미션 메뉴 클릭됨"); // 디버깅용
             }
         });
 

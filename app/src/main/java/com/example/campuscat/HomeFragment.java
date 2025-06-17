@@ -76,13 +76,12 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
-        // ✅ 미션 버튼 → MissionFragment로 이동
+        // ✅ 미션 버튼 → MissionActivity로 이동 (수정할 부분)
         btnMission.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new MissionFragment())
-                    .addToBackStack(null)
-                    .commit();
+            // Intent를 사용하여 MissionActivity를 시작
+            Intent intent = new Intent(requireContext(), MissionActivity.class);
+            startActivity(intent);
+            // Log.d("HomeFragment", "MissionActivity 시작 요청됨"); // 확인용 로그 추가
         });
 
         // ✅ 오늘 일정 텍스트 → CalendarFragment로 이동
