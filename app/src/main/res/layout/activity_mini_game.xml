@@ -4,8 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#B3E5FC">
+    android:layout_height="match_parent">
+
+    <!-- 🎨 배경화면 이미지 -->
+    <ImageView
+        android:id="@+id/gameBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/minigame_background"
+        android:contentDescription="게임 배경"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 상단 바: 타이머 + 재화 + 일시정지 -->
     <LinearLayout
@@ -55,6 +67,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_pause"
+            android:scaleType="fitCenter"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="일시정지 버튼"
             android:layout_marginStart="8dp" />
