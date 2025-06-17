@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="추가하기"
+            android:textSize="16sp"
             android:backgroundTint="#FFE275"
             android:textColor="#1A274D" />
     </LinearLayout>
@@ -92,6 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="추가하기"
+                android:textSize="14sp"
                 android:backgroundTint="#FFE275"
                 android:textColor="#1A274D"
                 android:layout_marginTop="16dp"
