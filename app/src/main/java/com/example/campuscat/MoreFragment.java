@@ -1,11 +1,12 @@
 package com.example.campuscat; // 본인의 패키지명에 맞게 변경해주세요.
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.util.Log; // Log 사용을 위해 임포트 추가
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,8 +67,10 @@ public class MoreFragment extends Fragment {
         menuInventory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 인벤토리 프래그먼트로 이동하는 코드
-                // replaceFragment(new InventoryFragment());
+                // 인벤토리 Activity로 이동하는 코드
+                Intent intent = new Intent(getActivity(), InventoryActivity.class);
+                startActivity(intent);
+
                 Log.d("MoreFragment", "인벤토리 메뉴 클릭됨"); // 디버깅용
             }
         });

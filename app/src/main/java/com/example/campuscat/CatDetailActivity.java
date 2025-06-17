@@ -108,6 +108,7 @@ public class CatDetailActivity extends AppCompatActivity {
     private void updateFishCount() {
         SharedPreferences prefs = getSharedPreferences("CatPrefs", MODE_PRIVATE);
         int fishCount = prefs.getInt("fish_count", 0);
+
         fishCountText.setText(String.valueOf(fishCount));
     }
 

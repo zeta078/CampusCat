@@ -564,6 +564,7 @@ public class PlannerFragment extends Fragment {
                     int spinnerPosition = adapter.getPosition(goalTime + "시간");
                     if (spinnerPosition >= 0) {
                         newGoalTimeSpinner.setSelection(spinnerPosition);
+
                     }
                     setupGoalTimeSpinnerListener(newGoalTimeSpinner); // 리스너 다시 설정
                     newGoalTimeSpinner.setEnabled(!isFrozen); // 동결 상태에 따라 활성화/비활성화
