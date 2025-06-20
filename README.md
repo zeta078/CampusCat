@@ -63,7 +63,7 @@ Campus Cat은 학교 생활에 필요한 다양한 기능들을 통합한 **동�
 ## 🐾 앱 로고
 <img src="images/logo.png" alt="Campus Cat 로고" width="200">
 
-## 🏠 초기 홈화면
+## 🏠 최종 홈화면
 <img src="images/home.png" alt="Campus Cat 홈화면" width="300">
 ---
 
