@@ -111,10 +111,7 @@ Campus Cat은 학교 생활에 필요한 다양한 기능들을 통합한 **동�
 
 - GitHub Repository:  
   👉 [https://github.com/zeta078/CampusCat](https://github.com/zeta078/CampusCat)
-
-- WBS 문서:  
-  📄 [Google 스프레드시트 링크](https://docs.google.com/spreadsheets/d/1i_O5NWbY6i1WMSEarO8z1CSP4pUFJbnDpUvokQc_wwE/edit?gid=1951675525#gid=1951675525)
-
+  
 ---
 
 ## 🙏 감사합니다!
