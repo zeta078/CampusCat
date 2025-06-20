@@ -60,6 +60,8 @@ Campus Cat은 학교 생활에 필요한 다양한 기능들을 통합한 **동�
 
 ---
 메인 홈화면 및 로고 이미지
+<img src="images/CampusCat LOGO.png" alt="로고 이미지" width="50%">
+<img src="images/CampusCat HOME.png" alt="최종 홈화면" width="50%">
 
 ## 🚀 주요 기능
 
